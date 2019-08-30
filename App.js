@@ -1,8 +1,32 @@
 import React,{useState} from 'react';
 import { StyleSheet, Text, View ,Button,TextInput,TouchableOpacity} from 'react-native';
+import firebase from 'firebase';
+
 
 export default function App() {
-  const [outputText,setOutputText]= useState('Primeiro teste react native')
+  var firebaseConfig = {
+    apiKey: "AIzaSyCj8ncSYh9SKZOnYNv2kcuNA2CsjYTmenA",
+    authDomain: "estagio3-d9c6d.firebaseapp.com",
+    databaseURL: "https://estagio3-d9c6d.firebaseio.com",
+    projectId: "estagio3-d9c6d",
+    storageBucket: "",
+    messagingSenderId: "136453378511",
+    appId: "1:136453378511:web:f0e9cd9b14ef7125"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+
+    
+  //  firebase.database().ref('clientes/1/compra/compras').update({
+  //      vendedor:"carlos",
+  //      comprador:null
+  //  }
+  //  ).then(()=>{
+  //    console.log('deu certo');
+  //  }).catch((error)=>{
+  //    console.log(error);
+  //  })
   return (
    
     <View style={styles.container}>
