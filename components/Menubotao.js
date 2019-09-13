@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, TextInput, TouchableOpacity, Text, ScrollView, StyleSheet } from 'react-native';
 
-const RegisterClient = props => {
+const MenuBotao = props => {
     return (
         
             <View style={styles.backgroundCard}>
-                <Text style={styles.text}>Registar Cliente</Text>
+                <Text style={styles.text}>{props.titulo}</Text>
             </View>
         
 
@@ -13,7 +13,7 @@ const RegisterClient = props => {
 }
 const styles = StyleSheet.create({
     backgroundCard: {
-        backgroundColor: '#fff',
+        backgroundColor: '#641e82',
         width: 250,
         height: 60,
         justifyContent: "center",
@@ -22,8 +22,8 @@ const styles = StyleSheet.create({
 
     },
     text: {
-        color: 'black',
+        color: '#fff',
         fontWeight: "bold"
     },
 })
-export default RegisterClient;
+export default MenuBotao;

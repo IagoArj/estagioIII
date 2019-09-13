@@ -1,19 +1,16 @@
 import React from 'react';
 import { View, TextInput, TouchableOpacity, Text, ScrollView, StyleSheet } from 'react-native';
 
-const Clients = props => {
-    
-    return (
-        <View>
-            
-        </View>
-    );
+const RegistrarCliente = props => {
+return(
+    <View><Text></Text></View>
+)
 }
-Clients.navigationOptions={
-    title:'Clientes',
+RegistrarCliente.navigationOptions={
+    title:'Registrar Cliente',
     headerTintColor: '#fff',
     headerStyle:{
         backgroundColor:'#641e82',
     }
   };
-export default Clients;
+export default RegistrarCliente;

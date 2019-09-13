@@ -1,13 +1,18 @@
 import React from 'react';
 import { View, TextInput, TouchableOpacity, Text, ScrollView, StyleSheet } from 'react-native';
 import { Dimensions } from "react-native";
-import ClientMenu from '../components/ClientMenu';
-import RegisterClient from '../components/RegisterClient';
-import Relatorio from '../components/Relatorio';
+import MenuBotao from '../components/Menubotao';
 
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full heigh
 
+this.state={
+    buttons:[
+        {key:0 , rota:'Clients',titulo:"Clientes"},
+        {key :1,rota:'RegistrarCliente',titulo:"Registrar Cliente"},
+        {key :2,rota:'Relatorios',titulo:"Relatórios"}
+    ]
+}
 const HomeScreen = props => {
 
     return (
@@ -15,37 +20,40 @@ const HomeScreen = props => {
             <View style={styles.background}>
                 <View style={styles.containerMenu}>
 
-                    <TouchableOpacity style={styles.btn} onPress={() => {
-                        props.navigation.navigate({ routeName: 'Clients' })
+                   {this.state.buttons.map((button)=>{
+                       return  <TouchableOpacity  onPress={() => {
+                        props.navigation.navigate({ routeName: button.rota })
                     }}>
-                        <ClientMenu ></ClientMenu>
+                        <MenuBotao key = {button.key} titulo ={button.titulo}></MenuBotao>
 
                     </TouchableOpacity>
-
-                    <RegisterClient></RegisterClient>
-                    <TouchableOpacity style={styles.btn} onPress={() => {
-                        props.navigation.navigate({ routeName: 'Relatorios' })
-                    }}>
-                        <Relatorio></Relatorio>
-                        
-                    </TouchableOpacity>
-
+                   })}
                 </View>
 
             </View>
         </ScrollView>
     );
 }
+
+HomeScreen.navigationOptions={
+    title:'Menu',
+    headerTintColor: '#fff',
+    headerStyle:{
+        backgroundColor:'#641e82',
+    }
+  };
+
+
 const styles = StyleSheet.create({
     background: {
         flex: 1,
-        backgroundColor: '#8a50a3',
+        backgroundColor: '#fff',
         height: height
     },
     containerMenu: {
         marginTop: 30,
         justifyContent: "center",
         alignItems: "center"
-    }
+    },
 })
 export default HomeScreen;

@@ -1,16 +1,8 @@
 import React from 'react';
-import firebase from 'firebase';
 import { StyleSheet, View, TextInput, TouchableOpacity, Text, ScrollView } from 'react-native';
 
-const LoginScreen = props => {
-
-    navigationOptions = {
-    title: 'Login',
-    headerStyle: { backgroundColor: 'red' },
-    headerTitleStyle: { color: 'green' },
-  }
-  return (
-
+const LoginScreen = props => {   
+  return (  
     <View style={styles.container}>
       <View style={styles.iconProfile} />
       <TextInput style={styles.input}
@@ -21,19 +13,23 @@ const LoginScreen = props => {
       <TouchableOpacity style={styles.btn} onPress={() => {
         props.navigation.navigate({ routeName: 'Home' })
       }} >
-        <Text style={{ color: 'white' }}> 1 </Text>
+        <Text style={{ color: 'white' ,  fontWeight:"bold"}}> Entrar </Text>
       </TouchableOpacity>
     </View>
   );
 
 
 }
+
+LoginScreen.navigationOptions={
+  header:null
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#8a50a3',
     alignItems: 'center',
-    paddingTop: '45%'
+    paddingTop: '35%'
   },
   input: {
     backgroundColor: '#531a6b',

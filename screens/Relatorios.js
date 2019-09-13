@@ -4,7 +4,14 @@ import { View, TextInput, TouchableOpacity, Text, ScrollView, StyleSheet } from 
 
 const Relatorios = props =>{
     return(
-        <View><Text>Relatorios</Text></View>
+        <View></View>
     );
 }
+Relatorios.navigationOptions={
+    title:'Relatórios',
+    headerTintColor: '#fff',
+    headerStyle:{
+        backgroundColor:'#641e82',
+    }
+  };
 export default Relatorios;
