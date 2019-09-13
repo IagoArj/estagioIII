@@ -4,6 +4,11 @@ import { StyleSheet, View, TextInput, TouchableOpacity, Text, ScrollView } from 
 
 const LoginScreen = props => {
 
+    navigationOptions = {
+    title: 'Login',
+    headerStyle: { backgroundColor: 'red' },
+    headerTitleStyle: { color: 'green' },
+  }
   return (
 
     <View style={styles.container}>
@@ -16,7 +21,7 @@ const LoginScreen = props => {
       <TouchableOpacity style={styles.btn} onPress={() => {
         props.navigation.navigate({ routeName: 'Home' })
       }} >
-        <Text style={{ color: 'white' }}> Logar</Text>
+        <Text style={{ color: 'white' }}> 1 </Text>
       </TouchableOpacity>
     </View>
   );

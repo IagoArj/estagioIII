@@ -27,6 +27,7 @@ const HomeScreen = props => {
                         props.navigation.navigate({ routeName: 'Relatorios' })
                     }}>
                         <Relatorio></Relatorio>
+                        
                     </TouchableOpacity>
 
                 </View>
