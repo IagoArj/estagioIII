@@ -2,13 +2,18 @@ import React from 'react';
 import { StyleSheet, View, TextInput, TouchableOpacity, Text, ScrollView } from 'react-native';
 
 const LoginScreen = props => {   
+    const [login, onChangeLogin] = React.useState('Login');
+    const [senha, onChangeSenha] = React.useState('Senha');
   return (  
     <View style={styles.container}>
       <View style={styles.iconProfile} />
       <TextInput style={styles.input}
-        placeholder="Login" />
+        onChangeText={text => onChangeLogin(text)}
+        value={login}
+        />
       <TextInput style={styles.input}
-        placeholder="Senha"
+        onChangeText={text => onChangeSenha(text)}
+        value={senha}
       />
       <TouchableOpacity style={styles.btn} onPress={() => {
         props.navigation.navigate({ routeName: 'Home' })

@@ -6,11 +6,11 @@ import MenuBotao from '../components/Menubotao';
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full heigh
 
-this.state={
-    buttons:[
-        {key:0 , rota:'Clients',titulo:"Clientes"},
-        {key :1,rota:'RegistrarCliente',titulo:"Registrar Cliente"},
-        {key :2,rota:'Relatorios',titulo:"Relatórios"}
+this.state = {
+    buttons: [
+        { rota: 'Clients', titulo: "Clientes" },
+        { rota: 'RegistrarCliente', titulo: "Registrar Cliente" },
+        { rota: 'Relatorios', titulo: "Relatórios" }
     ]
 }
 const HomeScreen = props => {
@@ -20,14 +20,13 @@ const HomeScreen = props => {
             <View style={styles.background}>
                 <View style={styles.containerMenu}>
 
-                   {this.state.buttons.map((button)=>{
-                       return  <TouchableOpacity  onPress={() => {
-                        props.navigation.navigate({ routeName: button.rota })
-                    }}>
-                        <MenuBotao key = {button.key} titulo ={button.titulo}></MenuBotao>
-
-                    </TouchableOpacity>
-                   })}
+                    {this.state.buttons.map((button) => {
+                        return <TouchableOpacity onPress={() => {
+                            props.navigation.navigate({ routeName: button.rota })
+                        }}>
+                            <MenuBotao titulo={button.titulo}></MenuBotao>
+                        </TouchableOpacity>
+                    })}
                 </View>
 
             </View>
@@ -35,13 +34,13 @@ const HomeScreen = props => {
     );
 }
 
-HomeScreen.navigationOptions={
-    title:'Menu',
+HomeScreen.navigationOptions = {
+    title: 'Menu',
     headerTintColor: '#fff',
-    headerStyle:{
-        backgroundColor:'#641e82',
+    headerStyle: {
+        backgroundColor: '#641e82',
     }
-  };
+};
 
 
 const styles = StyleSheet.create({

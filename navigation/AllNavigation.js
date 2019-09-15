@@ -8,7 +8,7 @@ import RegistrarCliente from '../screens/RegistrarCliente'
 
 const AllNavigator = createStackNavigator({
     Login: LoginScreen,
-    Home: HomeScreen,
+    Home: HomeScreen, 
     Clients: Clients,
     Relatorios:Relatorios, 
     RegistrarCliente: RegistrarCliente
