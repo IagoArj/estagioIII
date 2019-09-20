@@ -52,7 +52,8 @@ const styles = StyleSheet.create({
     containerMenu: {
         marginTop: 30,
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        
     },
 })
 export default HomeScreen;

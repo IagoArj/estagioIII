@@ -18,7 +18,8 @@ const styles = StyleSheet.create({
         height: 60,
         justifyContent: "center",
         alignItems: "center",
-        marginBottom:30
+        marginBottom:30,
+        borderRadius:10
 
     },
     text: {

@@ -5,12 +5,15 @@ import { View, TextInput, TouchableOpacity, Text, ScrollView, StyleSheet } from 
 const RegistrarCliente = props => {
     state={
         nomeState:nome,
-        emailState:email
+        telefoneState:telefone,
+        limiteContaState:limiteConta,
+        permissaoState:permissao
     }
-
-
-    var [nome, onChangeNome] = React.useState('nome');
-    var [email, onChangeEmail] = React.useState("email");
+    
+    var [nome, onChangeNome] = React.useState('Nome');
+    var [telefone, onChangeTelefone] = React.useState("Telefone");
+    var [limiteConta, onChangeLimiteConta] = React.useState("Limite Da Conta");
+    var [permissao, onChangePermissao] = React.useState('Permissão');
     
 return(
     <View>
@@ -19,15 +22,39 @@ return(
         value={nome}
         />
         <TextInput style={styles.input}
-        onChangeText={text => onChangeEmail(text)}
+        onChangeText={text => onChangeTelefone(text)}
         keyboardType ='numeric'
-        value={email}
+        value={telefone}
+        />
+        <TextInput style={styles.input}
+        onChangeText={text => onChangeLimiteConta(text)}
+        value={limiteConta}
+        keyboardType ='numeric'
+        />
+        <TextInput style={styles.input}
+        onChangeText={text => onChangePermissao(text)}
+        value={permissao}
         />
         <TouchableOpacity style={styles.btn} onPress={() => {
+            var date = new Date().getDate(); //Current Date
+            var month = new Date().getMonth() + 1; //Current Month
+            var year = new Date().getFullYear(); //Current Year
+            var hours = new Date().getHours(); //Current Hours
+            var min = new Date().getMinutes(); //Current Minutes
+
         firebase.database().ref('clientes/'+ nome).set(
             {
                 nome:nome,
-                email:email
+                telefone:telefone,
+                limiteConta:limiteConta,
+                permissao:{
+
+                },
+                conta:{
+                    valorTotal:0,
+                    dataCriação: date + '/' + month + '/' + year + ' ' + hours + ':' +min,
+                    dividas:[]
+                }
             }
         ).then(()=>{
             console.log('enviado');
