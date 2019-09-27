@@ -1,16 +1,19 @@
 import React from 'react';
+import { Button } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { StyleSheet, View, TextInput, TouchableOpacity, Text, ScrollView } from 'react-native';
 
-const LoginScreen = props => {   
-    const [login, onChangeLogin] = React.useState('Login');
-    const [senha, onChangeSenha] = React.useState('Senha');
-  return (  
+const LoginScreen = props => {
+  const [login, onChangeLogin] = React.useState('Login');
+  const [senha, onChangeSenha] = React.useState('Senha');
+  return (
+    
     <View style={styles.container}>
       <View style={styles.iconProfile} />
       <TextInput style={styles.input}
         onChangeText={text => onChangeLogin(text)}
         value={login}
-        />
+      />
       <TextInput style={styles.input}
         onChangeText={text => onChangeSenha(text)}
         value={senha}
@@ -18,16 +21,18 @@ const LoginScreen = props => {
       <TouchableOpacity style={styles.btn} onPress={() => {
         props.navigation.navigate({ routeName: 'Home' })
       }} >
-        <Text style={{ color: 'white' ,  fontWeight:"bold"}}> Entrar </Text>
+        <Text style={{ color: 'white', fontWeight: "bold" }}> Entrar </Text>
       </TouchableOpacity>
+      
+
     </View>
   );
 
 
 }
 
-LoginScreen.navigationOptions={
-  header:null
+LoginScreen.navigationOptions = {
+  header: null
 };
 const styles = StyleSheet.create({
   container: {
