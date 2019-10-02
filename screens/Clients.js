@@ -7,6 +7,31 @@ import { Dimensions } from "react-native";
 var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full heigh
 
+const styles = StyleSheet.create({
+    clientsBox: {
+        marginLeft: width / 7.3
+    },
+    input: {
+        backgroundColor: '#531a6b',
+        width: 300,
+        height: 50,
+        marginTop: 15,
+        borderWidth: 0.1,
+        borderColor: "#c4e092",
+        paddingHorizontal: 30,
+        paddingVertical: 5,
+        borderRadius: 30,
+        marginBottom: 40
+    },
+})
+navigationOptions = {
+    title: 'Clientes',
+    headerTintColor: '#fff',
+    headerStyle: {
+        backgroundColor: '#641e82',
+    }
+};
+
 class Clients extends React.Component {
     constructor(props) {
         super(props);
@@ -16,38 +41,36 @@ class Clients extends React.Component {
                 { nome: 'Carlos', limiteConta: 1200 }, { nome: 'Lucia', limiteConta: 900 }, { nome: 'Iago', limiteConta: 350 }, { nome: 'Romario', limiteConta: 500 }, { nome: 'Fernando', limiteConta: 500 }, { nome: 'Marlene', limiteConta: 350 }, { nome: 'Jucilei', limiteConta: 100 }, { nome: 'Otacilio', limiteConta: 600 }, { nome: 'Cleyton', limiteConta: 750 }, { nome: 'Roberto', limiteConta: 650 },
             ]
         }
-        this.loadClients()
     }
-    
-      
-       loadClients = () => {
+       componentDidMount(){
         firebase.database().ref('clientes').on('value', (response) => {
-            this.setState({Clientes:response})
+            this.setState({Clientes:response.toJSON()})
         })
-       }
+    }
     
     render() {
         
     
-        var [nome, onChangeNome] = React.useState('pesquisar');
+        //var [nome, onChangeNome] = React.useState('pesquisar');
         return (
             <ScrollView style={styles.clientsBox}>
                 <TextInput style={styles.input}
                     onChangeText={text => onChangeNome(text)}
-                    value={nome}
+                    //value={nome}
                 />
+                
                 {this.state.Clientes.map((cliente) => {
-
                     return <TouchableOpacity style={styles.cliente} onPress={() => {
                         props.navigation.navigate('ClientPage', {
 
                         })
 
                     }}>
-                        <ClientBox nome={cliente.nome} ></ClientBox>
+                        <ClientBox nome ={cliente.Yddhvc.nome} ></ClientBox>
 
                     </TouchableOpacity>
                 })}
+                
 
 
             </ScrollView>
@@ -55,29 +78,7 @@ class Clients extends React.Component {
     
     }
     
-    navigationOptions = {
-        title: 'Clientes',
-        headerTintColor: '#fff',
-        headerStyle: {
-            backgroundColor: '#641e82',
-        }
-    };
-    styles = StyleSheet.create({
-        clientsBox: {
-            marginLeft: width / 7.3
-        },
-        input: {
-            backgroundColor: '#531a6b',
-            width: 300,
-            height: 50,
-            marginTop: 15,
-            borderWidth: 0.1,
-            borderColor: "#c4e092",
-            paddingHorizontal: 30,
-            paddingVertical: 5,
-            borderRadius: 30,
-            marginBottom: 40
-        },
-    })
+    
+   
 }
 export default Clients;
