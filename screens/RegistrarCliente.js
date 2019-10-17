@@ -42,19 +42,38 @@ return(
             var hours = new Date().getHours(); //Current Hours
             var min = new Date().getMinutes(); //Current Minutes
 
-        firebase.database().ref('clientes/'+ nome).set(
+        firebase.database().ref('clientes/'+ 3).set(
             {
-                nome:nome,
-                telefone:telefone,
-                limiteConta:limiteConta,
-                permissao:{
-
+               
+                id: 3,
+                nome: 'Maria Lúcia Beserra De Araujo',
+                telefone: '85999498552',
+                dataConta: '07/08/2019',
+                endereco: 'rua juvencio barroso 818',
+                autCompra: ['Emerson Iago Beserra De Araujo', 'Maria Lúcia Beserra De Araujo'],
+                ultimaCompra: '16/10/2019',
+                conta: {
+                    limiteConta: 1300,
+                    totalPagar: 0,
+                    saldo: 1300,
+                    compras: [
+                        {
+                            idCompra: 1,
+                            valorCompra: 150.35,
+                            comprador: 'Emerson Iago Beserra De Araujo',
+                            funcionario: 'luzia',
+                            dataCompra: '14/10/2019 15:26:42'
+                        },
+                        {
+                            idCompra: 2,
+                            valorCompra: 31.15,
+                            comprador: 'Maria Lúcia Beserra De Araujo',
+                            funcionario: 'Átila',
+                            dataCompra: '16/10/2019 11:21:12'
+                        }
+                    ]
                 },
-                conta:{
-                    valorTotal:0,
-                    dataCriação: date + '/' + month + '/' + year + ' ' + hours + ':' +min,
-                    dividas:[]
-                }
+            
             }
         ).then(()=>{
             console.log('enviado');

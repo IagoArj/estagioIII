@@ -1,10 +1,11 @@
 import React from 'react';
 import { View, TextInput, TouchableOpacity, Text, ScrollView, StyleSheet } from 'react-native';
-
+import Icon from 'react-native-vector-icons/FontAwesome5';
 const MenuBotao = props => {
     return (
         
-            <View style={styles.backgroundCard}>
+            <View style={styles.backgroundCard}  >
+                <Icon name={props.icon} size={80} color='white' ></Icon>
                 <Text style={styles.text}>{props.titulo}</Text>
             </View>
         
@@ -14,17 +15,22 @@ const MenuBotao = props => {
 const styles = StyleSheet.create({
     backgroundCard: {
         backgroundColor: '#641e82',
-        width: 250,
-        height: 60,
-        justifyContent: "center",
+        width: 175,
+        height: 250,
+        justifyContent:'center',
         alignItems: "center",
         marginBottom:30,
+        marginRight:15,
+        marginLeft:15,
         borderRadius:10
 
     },
     text: {
+        marginTop:10,
         color: '#fff',
-        fontWeight: "bold"
+        fontSize:18,
+        fontWeight: "bold",
+
     },
 })
 export default MenuBotao;

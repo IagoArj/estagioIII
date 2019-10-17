@@ -8,12 +8,15 @@ import RegistrarCliente from '../screens/RegistrarCliente'
 import ClientPage from '../screens/ClientPage';
 
 const AllNavigator = createStackNavigator({
-    Login: LoginScreen,
-    Home: HomeScreen, 
     Clients: Clients,
-    Relatorios:Relatorios, 
+    Home: HomeScreen,
+    
     RegistrarCliente: RegistrarCliente,
-    ClientPage:ClientPage
+    Login: LoginScreen,
+    ClientPage:ClientPage, 
+    Relatorios:Relatorios, 
+    
+    
     
 });
 

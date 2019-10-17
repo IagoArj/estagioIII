@@ -8,8 +8,13 @@ var width = Dimensions.get('window').width; //full width
 var height = Dimensions.get('window').height; //full heigh
 
 const styles = StyleSheet.create({
-    clientsBox: {
-        marginLeft: width / 7.3
+    inputBox: {
+        marginLeft: width / 7.3,
+    },
+    clientBox: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center'
     },
     input: {
         backgroundColor: '#531a6b',
@@ -24,13 +29,7 @@ const styles = StyleSheet.create({
         marginBottom: 40
     },
 })
-navigationOptions = {
-    title: 'Clientes',
-    headerTintColor: '#fff',
-    headerStyle: {
-        backgroundColor: '#641e82',
-    }
-};
+
 
 class Clients extends React.Component {
     constructor(props) {
@@ -38,47 +37,143 @@ class Clients extends React.Component {
         this.state = {
             Clientes: [],
             ClientesTest: [
-                { nome: 'Carlos', limiteConta: 1200 }, { nome: 'Lucia', limiteConta: 900 }, { nome: 'Iago', limiteConta: 350 }, { nome: 'Romario', limiteConta: 500 }, { nome: 'Fernando', limiteConta: 500 }, { nome: 'Marlene', limiteConta: 350 }, { nome: 'Jucilei', limiteConta: 100 }, { nome: 'Otacilio', limiteConta: 600 }, { nome: 'Cleyton', limiteConta: 750 }, { nome: 'Roberto', limiteConta: 650 },
+                {
+                    id: 1,
+                    nome: 'Carlos alberto lima de araujo',
+                    telefone: '85988159600',
+                    dataConta: '07/08/2019',
+                    endereco: 'rua juvencio barroso 818',
+                    autCompra: ['Emerson Iago Beserra De Araujo', 'Maria Lúcia Beserra De Araujo'],
+                    ultimaCompra: '16/10/2019',
+                    conta: {
+                        limiteConta: 2000,
+                        totalPagar: 130,
+                        saldo: 2000,
+                        compras: [
+                            {
+                                idCompra: 1,
+                                valorCompra: 150.35,
+                                comprador: 'Carlos Alberto',
+                                funcionario: 'luzia',
+                                dataCompra: '14/10/2019 15:26:42'
+                            },
+                            {
+                                idCompra: 2,
+                                valorCompra: 31.15,
+                                comprador: 'Emerson Iago Beserra De Araujo',
+                                funcionario: 'Átila',
+                                dataCompra: '16/10/2019 11:21:12'
+                            }
+                        ]
+                    },
+                }, {
+                    id: 2,
+                    nome: 'Emerson Iago Beserra De Araujo',
+                    telefone: '85988159600',
+                    dataConta: '07/08/2019',
+                    endereco: 'rua juvencio barroso 818',
+                    autCompra: ['Emerson Iago Beserra De Araujo', 'Maria Lúcia Beserra De Araujo'],
+                    ultimaCompra: '16/10/2019',
+                    conta: {
+                        limiteConta: 2000,
+                        totalPagar: 0,
+                        saldo: 2000,
+                        compras: [
+                            {
+                                idCompra: 1,
+                                valorCompra: 150.35,
+                                comprador: 'Carlos Alberto',
+                                funcionario: 'luzia',
+                                dataCompra: '14/10/2019 15:26:42'
+                            },
+                            {
+                                idCompra: 2,
+                                valorCompra: 31.15,
+                                comprador: 'Emerson Iago Beserra De Araujo',
+                                funcionario: 'Átila',
+                                dataCompra: '16/10/2019 11:21:12'
+                            }
+                        ]
+                    },
+                }, {
+                    id: 3,
+                    nome: 'Maria Lúcia Beserra De Araujo',
+                    telefone: '85988159600',
+                    dataConta: '07/08/2019',
+                    endereco: 'rua juvencio barroso 818',
+                    autCompra: ['Emerson Iago Beserra De Araujo', 'Maria Lúcia Beserra De Araujo'],
+                    ultimaCompra: '16/10/2019',
+                    conta: {
+                        limiteConta: 2000,
+                        totalPagar: 0,
+                        saldo: 2000,
+                        compras: [
+                            {
+                                idCompra: 1,
+                                valorCompra: 150.35,
+                                comprador: 'Carlos Alberto',
+                                funcionario: 'luzia',
+                                dataCompra: '14/10/2019 15:26:42'
+                            },
+                            {
+                                idCompra: 2,
+                                valorCompra: 31.15,
+                                comprador: 'Emerson Iago Beserra De Araujo',
+                                funcionario: 'Átila',
+                                dataCompra: '16/10/2019 11:21:12'
+                            }
+                        ]
+                    },
+                },
+
             ]
         }
     }
-       componentDidMount(){
+    componentDidMount() {
         firebase.database().ref('clientes').on('value', (response) => {
-            this.setState({Clientes:response.toJSON()})
+            this.setState({ Clientes: response.toJSON() })
         })
     }
-    
+
     render() {
-        
-    
+
+
         //var [nome, onChangeNome] = React.useState('pesquisar');
         return (
-            <ScrollView style={styles.clientsBox}>
-                <TextInput style={styles.input}
-                    onChangeText={text => onChangeNome(text)}
+            <ScrollView >
+                <View style={styles.inputBox}>
+                    <TextInput style={styles.input}
+                        onChangeText={text => onChangeNome(text)}
+
                     //value={nome}
-                />
-                
-                {this.state.Clientes.map((cliente) => {
-                    return <TouchableOpacity style={styles.cliente} onPress={() => {
-                        props.navigation.navigate('ClientPage', {
+                    />
+                </View>
+                <View style={styles.clientBox}>
+                    {this.state.ClientesTest.map((cliente) => {
+                        return <TouchableOpacity style={styles.cliente} onPress={() =>
+                            this.props.navigation.navigate('ClientPage', {
+                                cliente:cliente
 
-                        })
 
-                    }}>
-                        <ClientBox nome ={cliente.Yddhvc.nome} ></ClientBox>
+                            })
 
-                    </TouchableOpacity>
-                })}
-                
+                        }>
+                            <ClientBox nome={cliente.nome} totalPagar={cliente.conta["totalPagar"]}></ClientBox>
+
+                        </TouchableOpacity>
+                    })}
+                </View>
 
 
             </ScrollView>
         );
-    
+
     }
-    
-    
-   
+
+
+
 }
+Clients.navigationOptions = {
+    header: null
+};
 export default Clients;
