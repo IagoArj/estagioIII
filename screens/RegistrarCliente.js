@@ -14,6 +14,7 @@ const RegistrarCliente = props => {
     var [telefone, onChangeTelefone] = React.useState("Telefone");
     var [limiteConta, onChangeLimiteConta] = React.useState("Limite Da Conta");
     var [permissao, onChangePermissao] = React.useState('Permissão');
+    var [endereco, onChangeEndereco] = React.useState("Endereço")
     
 return(
     <View>
@@ -35,43 +36,35 @@ return(
         onChangeText={text => onChangePermissao(text)}
         value={permissao}
         />
+        <TextInput style={styles.input}
+        onChangeText={text => onChangeEndereco(text)}
+        value={endereco}
+        />
         <TouchableOpacity style={styles.btn} onPress={() => {
-            var date = new Date().getDate(); //Current Date
-            var month = new Date().getMonth() + 1; //Current Month
-            var year = new Date().getFullYear(); //Current Year
-            var hours = new Date().getHours(); //Current Hours
-            var min = new Date().getMinutes(); //Current Minutes
+           var date = new Date().getDate(); //Current Date
+           var month = new Date().getMonth() + 1; //Current Month
+           var year = new Date().getFullYear(); //Current Year
+           var hours = new Date().getHours(); //Current Hours
+           var min = new Date().getMinutes(); //Current Minutes
+           var seconds = new Date().getSeconds();
+
+           const diaConta = date + '/' + month + '/' + '/' + year + ' ' + hours + ':' + min + ':' + seconds
 
         firebase.database().ref('clientes/'+ 3).set(
             {
                
-                id: 3,
-                nome: 'Maria Lúcia Beserra De Araujo',
-                telefone: '85999498552',
-                dataConta: '07/08/2019',
-                endereco: 'rua juvencio barroso 818',
-                autCompra: ['Emerson Iago Beserra De Araujo', 'Maria Lúcia Beserra De Araujo'],
-                ultimaCompra: '16/10/2019',
+                id: Math.random().toString(36).substr(2, 9),
+                nome: nome,
+                telefone: telefone,
+                dataConta: diaConta,
+                endereco: endereco,
+                autCompra: [],
+                ultimaCompra: '',
                 conta: {
-                    limiteConta: 1300,
+                    limiteConta: limiteConta,
                     totalPagar: 0,
-                    saldo: 1300,
-                    compras: [
-                        {
-                            idCompra: 1,
-                            valorCompra: 150.35,
-                            comprador: 'Emerson Iago Beserra De Araujo',
-                            funcionario: 'luzia',
-                            dataCompra: '14/10/2019 15:26:42'
-                        },
-                        {
-                            idCompra: 2,
-                            valorCompra: 31.15,
-                            comprador: 'Maria Lúcia Beserra De Araujo',
-                            funcionario: 'Átila',
-                            dataCompra: '16/10/2019 11:21:12'
-                        }
-                    ]
+                    saldo: limiteConta,
+                    compras:[]
                 },
             
             }
