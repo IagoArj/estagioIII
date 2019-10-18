@@ -3,22 +3,20 @@ import { View, TextInput, TouchableOpacity, Text, ScrollView, StyleSheet } from 
 
 const ClientBox = props => {
     return (
-        <View>
+        
             <View style={styles.cliente}>
-                <View > 
-                    <Text style={styles.text} >{props.nome}</Text>
-                </View>
+                <Text style={styles.text} >{props.nome}</Text>
                 <View style={styles.pagar}>
-                    <Text>Pagar: </Text>
-                    <Text>{props.totalPagar}</Text>
+                    <Text style={styles.textWhite}>Pagar: </Text>
+                    <Text style={styles.textGreen}>{props.totalPagar}</Text>
                 </View>
             </View>
-        </View>
+        
     );
 }
 const styles = StyleSheet.create({
     cliente: {
-        flexDirection:"column",
+        flexDirection: "column",
         height: 125,
         width: 125,
         backgroundColor: '#641e82',
@@ -26,8 +24,8 @@ const styles = StyleSheet.create({
         marginLeft: 2.5,
         marginRight: 2.5,
         borderRadius: 10,
-        justifyContent:"space-between"
-        
+        justifyContent:"center"
+
     },
     pagar: {
         flex: 1,
@@ -35,9 +33,17 @@ const styles = StyleSheet.create({
         justifyContent: "space-around"
     },
     text: {
-        paddingLeft:10,
-        paddingRight:10,
+        paddingLeft: 10,
+        paddingRight: 10,
         color: '#fff',
+        fontWeight: "bold"
+    },
+    textWhite: {
+        color: 'white',
+        fontWeight: "bold"
+    },
+    textGreen: {
+        color: '#03fc56',
         fontWeight: "bold"
     }
 })
