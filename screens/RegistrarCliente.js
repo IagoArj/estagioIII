@@ -52,9 +52,9 @@ const RegistrarCliente = props => {
                 firebase.database().ref('clientes/').limitToLast(1).on('child_added', function(snapshot) {
 
                     // all records after the last continue to invoke this function
-                    console.log(snapshot.name(), snapshot.val());
+                    console.log(snapshot.key);
                     // get the last inserted key
-                    console.log(snapshot.key());
+                    idUsuario=snapshot.key +1 ;
                  
                  });
                 const cliente = {
