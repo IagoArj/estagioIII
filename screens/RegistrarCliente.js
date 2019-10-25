@@ -3,20 +3,22 @@ import firebase from 'firebase';
 import { View, TextInput, TouchableOpacity, Text, ScrollView, StyleSheet } from 'react-native';
 
 const RegistrarCliente = props => {
+    
     state = {
         nomeState: nome,
         telefoneState: telefone,
         limiteContaState: limiteConta,
         permissaoState: permissao
     }
-
+    
     var [nome, onChangeNome] = React.useState('Nome');
     var [telefone, onChangeTelefone] = React.useState("Telefone");
     var [limiteConta, onChangeLimiteConta] = React.useState("Limite Da Conta");
     var [permissao, onChangePermissao] = React.useState('Permissão');
     var [endereco, onChangeEndereco] = React.useState("Endereço")
-
+   
     return (
+        
         <View>
             <TextInput style={styles.input}
                 onChangeText={text => onChangeNome(text)}
@@ -41,22 +43,21 @@ const RegistrarCliente = props => {
                 value={endereco}
             />
             <TouchableOpacity style={styles.btn} onPress={() => {
-           
+
                 var data = new Date().getDate(); //Current Date
                 var month = new Date().getMonth() + 1; //Current Month
                 var year = new Date().getFullYear(); //Current Year
                 var hours = new Date().getHours(); //Current Hours
                 var min = new Date().getMinutes(); //Current Minutes
                 var seconds = new Date().getSeconds();
-                var idUsuario;
-                firebase.database().ref('clientes/').limitToLast(1).on('child_added', function(snapshot) {
-
+                var idUsuario = 1
+                firebase.database().ref('clientes/').limitToLast(1).on('child_added', (snapshot) => {
                     // all records after the last continue to invoke this function
-                    console.log(snapshot.key);
                     // get the last inserted key
-                    idUsuario=snapshot.key +1 ;
-                 
-                 });
+                    
+                    idUsuario=parseInt(snapshot.key) +1 ;
+                    console.log(idUsuario)
+                }).bind(this);
                 const cliente = {
                     id: idUsuario,
                     nome: nome,
@@ -80,7 +81,7 @@ const RegistrarCliente = props => {
                         ]
                     }
                 }
-
+                console.log("usuario: " + idUsuario)
                 firebase.database().ref('clientes/' + idUsuario).set(
                     cliente
                 ).then(() => {
