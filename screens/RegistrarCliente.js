@@ -41,13 +41,22 @@ const RegistrarCliente = props => {
                 value={endereco}
             />
             <TouchableOpacity style={styles.btn} onPress={() => {
+           
                 var data = new Date().getDate(); //Current Date
                 var month = new Date().getMonth() + 1; //Current Month
                 var year = new Date().getFullYear(); //Current Year
                 var hours = new Date().getHours(); //Current Hours
                 var min = new Date().getMinutes(); //Current Minutes
                 var seconds = new Date().getSeconds();
-                var idUsuario = Math.random().toString(36).substr(2, 9);
+                var idUsuario;
+                firebase.database().ref('clientes/').limitToLast(1).on('child_added', function(snapshot) {
+
+                    // all records after the last continue to invoke this function
+                    console.log(snapshot.name(), snapshot.val());
+                    // get the last inserted key
+                    console.log(snapshot.key());
+                 
+                 });
                 const cliente = {
                     id: idUsuario,
                     nome: nome,
@@ -60,14 +69,20 @@ const RegistrarCliente = props => {
                         limiteConta: limiteConta,
                         totalPagar: 0,
                         saldo: limiteConta,
-                        compras: []
+                        compras: [
+                            {
+                                comprador: '',
+                                dataCompra: '',
+                                funcionario: '',
+                                idCompra: 1,
+                                valorCompra: 0,
+                            }
+                        ]
                     }
                 }
 
                 firebase.database().ref('clientes/' + idUsuario).set(
-                    {
-                        cliente
-                    }
+                    cliente
                 ).then(() => {
                     console.log('enviado');
                 }).catch((error) => {

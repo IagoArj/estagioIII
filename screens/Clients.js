@@ -131,7 +131,8 @@ class Clients extends React.Component {
     }
     componentDidMount() {
         firebase.database().ref('clientes').on('value', (response) => {
-            this.setState({ Clientes: response.toJSON() })
+            console.log(response.toJSON())
+            this.setState({ Clientes: response.val() })
         })
     }
 
@@ -149,7 +150,7 @@ class Clients extends React.Component {
                     />
                 </View>
                 <View style={styles.clientBox}>
-                    {this.state.ClientesTest.map((cliente) => {
+                    {this.state.Clientes.map((cliente) => {
                         return <TouchableOpacity style={styles.cliente} onPress={() =>
                             this.props.navigation.navigate('ClientPage', {
                                 cliente:cliente
