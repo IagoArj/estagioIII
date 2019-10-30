@@ -13,7 +13,7 @@ const RegistrarCliente = props => {
     
     var [nome, onChangeNome] = React.useState('Nome');
     var [telefone, onChangeTelefone] = React.useState("Telefone");
-    var [limiteConta, onChangeLimiteConta] = React.useState("Limite Da Conta");
+    var [limiteConta, onChangeLimiteConta] = React.useState(0);
     var [permissao, onChangePermissao] = React.useState('Permissão');
     var [endereco, onChangeEndereco] = React.useState("Endereço")
    

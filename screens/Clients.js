@@ -36,102 +36,10 @@ class Clients extends React.Component {
         super(props);
         this.state = {
             Clientes: [],
-            ClientesTest: [
-                {
-                    id: 1,
-                    nome: 'Carlos alberto lima de araujo',
-                    telefone: '85988159600',
-                    dataConta: '07/08/2019',
-                    endereco: 'rua juvencio barroso 818',
-                    autCompra: ['Emerson Iago Beserra De Araujo', 'Maria Lúcia Beserra De Araujo'],
-                    ultimaCompra: '16/10/2019',
-                    conta: {
-                        limiteConta: 2000,
-                        totalPagar: 130,
-                        saldo: 2000,
-                        compras: [
-                            {
-                                idCompra: 1,
-                                valorCompra: 150.35,
-                                comprador: 'Carlos Alberto',
-                                funcionario: 'luzia',
-                                dataCompra: '14/10/2019 15:26:42'
-                            },
-                            {
-                                idCompra: 2,
-                                valorCompra: 31.15,
-                                comprador: 'Emerson Iago Beserra De Araujo',
-                                funcionario: 'Átila',
-                                dataCompra: '16/10/2019 11:21:12'
-                            }
-                        ]
-                    },
-                }, {
-                    id: 2,
-                    nome: 'Emerson Iago Beserra De Araujo',
-                    telefone: '85988159600',
-                    dataConta: '07/08/2019',
-                    endereco: 'rua juvencio barroso 818',
-                    autCompra: ['Emerson Iago Beserra De Araujo', 'Maria Lúcia Beserra De Araujo'],
-                    ultimaCompra: '16/10/2019',
-                    conta: {
-                        limiteConta: 2000,
-                        totalPagar: 0,
-                        saldo: 2000,
-                        compras: [
-                            {
-                                idCompra: 1,
-                                valorCompra: 150.35,
-                                comprador: 'Carlos Alberto',
-                                funcionario: 'luzia',
-                                dataCompra: '14/10/2019 15:26:42'
-                            },
-                            {
-                                idCompra: 2,
-                                valorCompra: 31.15,
-                                comprador: 'Emerson Iago Beserra De Araujo',
-                                funcionario: 'Átila',
-                                dataCompra: '16/10/2019 11:21:12'
-                            }
-                        ]
-                    },
-                }, {
-                    id: 3,
-                    nome: 'Maria Lúcia Beserra De Araujo',
-                    telefone: '85988159600',
-                    dataConta: '07/08/2019',
-                    endereco: 'rua juvencio barroso 818',
-                    autCompra: ['Emerson Iago Beserra De Araujo', 'Maria Lúcia Beserra De Araujo'],
-                    ultimaCompra: '16/10/2019',
-                    conta: {
-                        limiteConta: 2000,
-                        totalPagar: 0,
-                        saldo: 2000,
-                        compras: [
-                            {
-                                idCompra: 1,
-                                valorCompra: 150.35,
-                                comprador: 'Carlos Alberto',
-                                funcionario: 'luzia',
-                                dataCompra: '14/10/2019 15:26:42'
-                            },
-                            {
-                                idCompra: 2,
-                                valorCompra: 31.15,
-                                comprador: 'Emerson Iago Beserra De Araujo',
-                                funcionario: 'Átila',
-                                dataCompra: '16/10/2019 11:21:12'
-                            }
-                        ]
-                    },
-                },
-
-            ]
         }
     }
     componentDidMount() {
         firebase.database().ref('clientes').on('value', (response) => {
-            console.log(response.toJSON())
             this.setState({ Clientes: response.val() })
         })
     }
@@ -159,7 +67,7 @@ class Clients extends React.Component {
                             })
 
                         }>
-                            <ClientBox nome={cliente.nome} totalPagar={cliente.conta["totalPagar"]}></ClientBox>
+                            <ClientBox id ={cliente.id} nome={cliente.nome} totalPagar={cliente.conta.totalPagar}></ClientBox>
 
                         </TouchableOpacity>
                     })}
