@@ -50,7 +50,7 @@ const RegistrarCliente = props => {
                 var hours = new Date().getHours(); //Current Hours
                 var min = new Date().getMinutes(); //Current Minutes
                 var seconds = new Date().getSeconds();
-                var idUsuario = 1
+                var idUsuario = 0
                 firebase.database().ref('clientes/').limitToLast(1).on('child_added', (snapshot) => {
                     // all records after the last continue to invoke this function
                     // get the last inserted key

@@ -5,9 +5,9 @@ import { View, TextInput, TouchableOpacity, Text, ScrollView, StyleSheet, Alert 
 const ClientPage = props => {
     const id = props.navigation.state.params.cliente.id
     const nome = props.navigation.state.params.cliente.nome
-    const limiteConta = parseInt(props.navigation.state.params.cliente.conta.limiteConta)
-    const saldo = parseInt(props.navigation.state.params.cliente.conta.saldo)
-    const totalPagar = parseInt(props.navigation.state.params.cliente.conta.totalPagar)
+    const limiteConta = parseFloat(props.navigation.state.params.cliente.conta.limiteConta)
+    const saldo = parseFloat(props.navigation.state.params.cliente.conta.saldo)
+    const totalPagar = parseFloat(props.navigation.state.params.cliente.conta.totalPagar)
 
     var [comprador, onChangeComprador] = React.useState('Comprador');
     var [valorDaCompra, onChangeValorDaCompra] = React.useState(0);
@@ -56,12 +56,17 @@ const ClientPage = props => {
                             compra
                         ).then(() => {
                            var saldoReal = saldo - compra.valorCompra
+                           var totalPagarReal= limiteConta - saldoReal
+                           var totalPagarArrendondado = totalPagarReal.toFixed(2)
                             firebase.database().ref('clientes/' + id + '/conta/').update(
-                                {saldo :saldoReal,
-                                totalPagar:limiteConta-saldoReal,
+                                {saldo :saldoReal.toFixed(2),
+                                totalPagar:totalPagarArrendondado,
                                 }
                             ).then(() => {
                                 console.log(compra.valorCompra);
+                                Alert.alert('Compra concluída com sucesso!')
+                                valorDaCompra = 0,
+                                comprador="Comprador"
                             }).catch((error) => {
                                 console.log(error)
                             })
