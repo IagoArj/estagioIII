@@ -1,98 +1,6 @@
 import React from 'react';
 import firebase from 'firebase';
 import { View, TextInput, TouchableOpacity, Text, ScrollView, StyleSheet, Alert } from 'react-native';
-
-const ClientPage = props => {
-    const id = props.navigation.state.params.cliente.id
-    const nome = props.navigation.state.params.cliente.nome
-    const limiteConta = parseFloat(props.navigation.state.params.cliente.conta.limiteConta)
-    const saldo = parseFloat(props.navigation.state.params.cliente.conta.saldo)
-    const totalPagar = parseFloat(props.navigation.state.params.cliente.conta.totalPagar)
-
-    var [comprador, onChangeComprador] = React.useState('Comprador');
-    var [valorDaCompra, onChangeValorDaCompra] = React.useState(0);
-    return (
-        <View>
-            <View>
-                <Text>nome: {nome} </Text>
-                <Text>Limite: {limiteConta}</Text>
-                <Text>Saldo: {saldo}</Text>
-                <Text>Pagar: {totalPagar}</Text>
-            </View>
-            <View>
-                <TextInput style={styles.input}
-                    onChangeText={text => onChangeComprador(text)}
-                    value={comprador}
-                />
-                <TextInput keyboardType="numeric" style={styles.input}
-                    onChangeText={text => onChangeValorDaCompra(text)}
-                    value={valorDaCompra}
-                />
-                <TouchableOpacity style={styles.btn} onPress={() => {
-
-                    var data = new Date().getDate(); //Current Date
-                    var month = new Date().getMonth() + 1; //Current Month
-                    var year = new Date().getFullYear(); //Current Year
-                    var hours = new Date().getHours(); //Current Hours
-                    var min = new Date().getMinutes(); //Current Minutes
-                    var seconds = new Date().getSeconds();
-
-                    firebase.database().ref('clientes/' + id + '/conta/compras/').limitToLast(1).on('child_added', (snapshot) => {
-                        // all records after the last continue to invoke this function
-                        // get the last inserted key
-
-                        idCompra = parseInt(snapshot.key) + 1;
-                       
-                    }).bind(this);
-                    const compra = {
-                        comprador: comprador,
-                        dataCompra: data + '/' + month + '/' + year + ' ' + hours + ':' + min + ':' + seconds,
-                        funcionario: "default",
-                        idCompra: idCompra,
-                        valorCompra: valorDaCompra
-                    }
-                    if (compra.valorCompra <= saldo) {
-                        firebase.database().ref('clientes/' + id + '/conta/compras/' + idCompra).set(
-                            compra
-                        ).then(() => {
-                           var saldoReal = saldo - compra.valorCompra
-                           var totalPagarReal= limiteConta - saldoReal
-                           var totalPagarArrendondado = totalPagarReal.toFixed(2)
-                            firebase.database().ref('clientes/' + id + '/conta/').update(
-                                {saldo :saldoReal.toFixed(2),
-                                totalPagar:totalPagarArrendondado,
-                                }
-                            ).then(() => {
-                                console.log(compra.valorCompra);
-                                Alert.alert('Compra concluída com sucesso!')
-                                valorDaCompra = 0,
-                                comprador="Comprador"
-                            }).catch((error) => {
-                                console.log(error)
-                            })
-                        }).catch((error) => {
-                            console.log(error)
-                        })
-
-                    }
-                    else{
-                        Alert.alert('Saldo insuficiente')
-                    }
-
-                }}>
-                    <Text style={{ color: 'white', fontWeight: "bold" }}> Adicionar conta </Text>
-                </TouchableOpacity>
-            </View>
-        </View>
-    );
-}
-ClientPage.navigationOptions = {
-    title: 'Cliente',
-    headerTintColor: '#fff',
-    headerStyle: {
-        backgroundColor: '#641e82',
-    }
-};
 const styles = StyleSheet.create({
     cliente: {
         height: 50,
@@ -120,4 +28,105 @@ const styles = StyleSheet.create({
     },
 
 })
+class ClientPage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            comprador: "",
+            valorCompra: '',
+            id: props.navigation.state.params.cliente.id,
+            nome: props.navigation.state.params.cliente.nome,
+            limiteConta : parseFloat(props.navigation.state.params.cliente.conta.limiteConta),
+            saldo : parseFloat(props.navigation.state.params.cliente.conta.saldo),
+            totalPagar : parseFloat(props.navigation.state.params.cliente.conta.totalPagar)
+        }
+    }
+
+    render() {
+        return (
+            <View>
+                <View>
+                    <Text>nome: {this.state.nome} </Text>
+                    <Text>Limite: {this.state.limiteConta}</Text>
+                    <Text>Saldo: {this.state.saldo}</Text>
+                    <Text>Pagar: {this.state.totalPagar}</Text>
+                </View>
+                <View>
+                    <TextInput style={styles.input}
+                        placeholder="Comprador"
+                        onChangeText={(comprador) => this.setState({ comprador:comprador })}
+                        value={this.state.comprador}
+                    />
+
+                    <TextInput keyboardType="numeric" style={styles.input}
+                        placeholder="Valor da compra"
+                        onChangeText= {(valor) => this.setState({ valorCompra:valor })}
+                        value={this.state.valorCompra}
+                    />
+                    <TouchableOpacity style={styles.btn} onPress={() => {
+
+                        var data = new Date().getDate(); //Current Date
+                        var month = new Date().getMonth() + 1; //Current Month
+                        var year = new Date().getFullYear(); //Current Year
+                        var hours = new Date().getHours(); //Current Hours
+                        var min = new Date().getMinutes(); //Current Minutes
+                        var seconds = new Date().getSeconds();
+
+                        firebase.database().ref('clientes/' + this.state.id + '/conta/compras/').limitToLast(1).on('child_added', (snapshot) => {
+                            // all records after the last continue to invoke this function
+                            // get the last inserted key
+
+                            idCompra = parseInt(snapshot.key) + 1;
+
+                        }).bind(this);
+                        const compra = {
+                            comprador: this.state.comprador,
+                            dataCompra: data + '/' + month + '/' + year + ' ' + hours + ':' + min + ':' + seconds,
+                            funcionario: "default",
+                            idCompra: idCompra,
+                            valorCompra: parseFloat(this.state.valorCompra)
+                        }
+                       
+                        if (compra.valorCompra <= this.state.saldo) {
+                            firebase.database().ref('clientes/' + this.state.id + '/conta/compras/' + idCompra).set(
+                                compra
+                            ).then(() => {
+                                var saldoReal = this.state.saldo - compra.valorCompra
+                                var totalPagarReal = this.state.limiteConta - saldoReal
+                                var totalPagarArrendondado = totalPagarReal.toFixed(2)
+                                firebase.database().ref('clientes/' + this.state.id + '/conta/').update(
+                                    {
+                                        saldo: saldoReal.toFixed(2),
+                                        totalPagar: totalPagarArrendondado,
+                                    }
+                                ).then(() => {
+                                    Alert.alert('Compra concluída com sucesso!')
+
+                                }).catch((error) => {
+                                    console.log(error)
+                                })
+                            }).catch((error) => {
+                                console.log(error)
+                            })
+
+                        }
+                        else {
+                            Alert.alert('Saldo insuficiente')
+                        }
+
+                    }}>
+                        <Text style={{ color: 'white', fontWeight: "bold" }}> Adicionar conta </Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        );
+    }
+}
+ClientPage.navigationOptions = {
+    title: 'Cliente',
+    headerTintColor: '#fff',
+    headerStyle: {
+        backgroundColor: '#641e82',
+    }
+};
 export default ClientPage;

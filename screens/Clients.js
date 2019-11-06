@@ -53,8 +53,6 @@ class Clients extends React.Component {
                 <View style={styles.inputBox}>
                     <TextInput style={styles.input}
                         onChangeText={text => onChangeNome(text)}
-
-                    //value={nome}
                     />
                 </View>
                 <View style={styles.clientBox}>
@@ -62,10 +60,10 @@ class Clients extends React.Component {
                         return <TouchableOpacity style={styles.cliente} onPress={() =>
                             this.props.navigation.navigate('ClientPage', {
                                 cliente:cliente
-
+                                
 
                             })
-
+                            
                         }>
                             <ClientBox id ={cliente.id} nome={cliente.nome} totalPagar={cliente.conta.totalPagar}></ClientBox>
 

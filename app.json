@@ -5,6 +5,9 @@
     "version": "1.0.0",
     "slug": "estagioIII",
     "sdkVersion": "34.0.0",
+    "ios": {
+      "bundleIdentifier": "com.iagocomprany.doisago"
+    },
     "android": {
       "package": "com.iagocompany.doisago"
     }
