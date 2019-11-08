@@ -36,12 +36,17 @@ class ClientPage extends React.Component {
             valorCompra: '',
             id: props.navigation.state.params.cliente.id,
             nome: props.navigation.state.params.cliente.nome,
-            limiteConta : parseFloat(props.navigation.state.params.cliente.conta.limiteConta),
-            saldo : parseFloat(props.navigation.state.params.cliente.conta.saldo),
-            totalPagar : parseFloat(props.navigation.state.params.cliente.conta.totalPagar)
+            limiteConta: parseFloat(props.navigation.state.params.cliente.conta.limiteConta),
+            saldo: parseFloat(props.navigation.state.params.cliente.conta.saldo),
+            totalPagar: parseFloat(props.navigation.state.params.cliente.conta.totalPagar),
+            Extrato: []
         }
     }
-
+    componentDidMount() {
+        firebase.database().ref('clientes/' + this.state.id + '/conta/compras/').on('value', (response) => {
+            this.setState({ Extrato: response.val() })
+        })
+    }
     render() {
         return (
             <View>
@@ -54,13 +59,13 @@ class ClientPage extends React.Component {
                 <View>
                     <TextInput style={styles.input}
                         placeholder="Comprador"
-                        onChangeText={(comprador) => this.setState({ comprador:comprador })}
+                        onChangeText={(comprador) => this.setState({ comprador: comprador })}
                         value={this.state.comprador}
                     />
 
                     <TextInput keyboardType="numeric" style={styles.input}
                         placeholder="Valor da compra"
-                        onChangeText= {(valor) => this.setState({ valorCompra:valor })}
+                        onChangeText={(valor) => this.setState({ valorCompra: valor })}
                         value={this.state.valorCompra}
                     />
                     <TouchableOpacity style={styles.btn} onPress={() => {
@@ -86,7 +91,7 @@ class ClientPage extends React.Component {
                             idCompra: idCompra,
                             valorCompra: parseFloat(this.state.valorCompra)
                         }
-                       
+
                         if (compra.valorCompra <= this.state.saldo) {
                             firebase.database().ref('clientes/' + this.state.id + '/conta/compras/' + idCompra).set(
                                 compra
@@ -99,7 +104,10 @@ class ClientPage extends React.Component {
                                         saldo: saldoReal.toFixed(2),
                                         totalPagar: totalPagarArrendondado,
                                     }
+
                                 ).then(() => {
+                                    this.setState({ saldo: saldoReal.toFixed(2) })
+                                    this.setState({ totalPagar: totalPagarArrendondado })
                                     Alert.alert('Compra concluída com sucesso!')
 
                                 }).catch((error) => {
@@ -118,6 +126,15 @@ class ClientPage extends React.Component {
                         <Text style={{ color: 'white', fontWeight: "bold" }}> Adicionar conta </Text>
                     </TouchableOpacity>
                 </View>
+                {this.state.Extrato.map((extrato) => {
+                    return <View style={styles.extrato}>
+                        <Text>{"Comprador: " + extrato.comprador}</Text>
+                        <Text>{"Valor " + extrato.valorCompra}</Text>
+                        <Text>{"Data: " + extrato.dataCompra}</Text>
+                        <Text>Status:Statico</Text>
+
+                    </View>
+                })}
             </View>
         );
     }
