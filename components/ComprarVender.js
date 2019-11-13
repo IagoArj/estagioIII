@@ -1,22 +1,20 @@
 import React from 'react';
 import { View, TextInput, TouchableOpacity, Text, ScrollView, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-const MenuBotao = props => {
+const ComprarVender = props => {
     return (
-        
-            <View style={styles.backgroundCard}  >
-                <Icon name={props.icon} size={80} color='white' ></Icon>
-                <Text style={styles.text}>{props.titulo}</Text>
-            </View>
-        
-
+        <View style={styles.backgroundCard}  >
+            <Icon name={props.icon} size={60} color='white' ></Icon>
+            <Text style={styles.text}>{props.titulo}</Text>
+        </View>
     );
+    
 }
 const styles = StyleSheet.create({
     backgroundCard: {
         backgroundColor: '#641e82',
-        width: 175,
-        height: 250,
+        width: 150,
+        height: 150,
         justifyContent:'center',
         alignItems: "center",
         marginBottom:30,
@@ -32,4 +30,4 @@ const styles = StyleSheet.create({
 
     },
 })
-export default MenuBotao;
+export default ComprarVender;
