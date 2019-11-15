@@ -46,10 +46,10 @@ const styles = StyleSheet.create({
 
     }, bntRow: {
         flexDirection: 'row'
-    },extrato:{
+    }, extrato: {
         backgroundColor: '#641e82',
-        marginTop:15,
-        width:300,
+        marginTop: 15,
+        width: 300,
         justifyContent: 'space-around'
     }
 })
@@ -59,6 +59,7 @@ class ClientPage extends React.Component {
         this.state = {
             comprador: "",
             valorCompra: '',
+            valorPagamento: '',
             id: props.navigation.state.params.cliente.id,
             nome: props.navigation.state.params.cliente.nome,
             limiteConta: parseFloat(props.navigation.state.params.cliente.conta.limiteConta),
@@ -66,7 +67,7 @@ class ClientPage extends React.Component {
             totalPagar: parseFloat(props.navigation.state.params.cliente.conta.totalPagar),
             Extrato: [],
             comprarVisible: false,
-            venderVisible: false
+            pagarVisible: false
         }
     }
     componentDidMount() {
@@ -121,7 +122,7 @@ class ClientPage extends React.Component {
                                             funcionario: "default",
                                             idCompra: idCompra,
                                             valorCompra: parseFloat(this.state.valorCompra),
-                                            status:'compra'
+                                            status: 'compra'
                                         }
 
                                         if (compra.valorCompra <= this.state.saldo) {
@@ -140,7 +141,7 @@ class ClientPage extends React.Component {
                                                 ).then(() => {
                                                     this.setState({ saldo: saldoReal.toFixed(2) })
                                                     this.setState({ totalPagar: totalPagarArrendondado })
-                                                    this.setState({ modalVisible: false })
+                                                    this.setState({ compraVisible: false })
                                                     Alert.alert('Compra concluída com sucesso!')
 
                                                 }).catch((error) => {
@@ -158,6 +159,7 @@ class ClientPage extends React.Component {
                                     }}>
                                         <Text style={{ color: 'white', fontWeight: "bold" }}> Adicionar conta </Text>
                                     </TouchableOpacity>
+
                                     <TouchableOpacity style={styles.btn} onPress={() => {
                                         this.setState({ comprarVisible: false })
                                     }}>
@@ -168,7 +170,91 @@ class ClientPage extends React.Component {
                         </View>
                     </View>
                 </Modal>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={this.state.pagarVisible}
+                    onRequestClose={() => {
+                        Alert.alert('Modal has been closed.');
+                    }}>
+                    <View style={styles.modalCentralizado}>
+                        <View style={styles.modal}>
+                            <TextInput keyboardType="numeric" style={styles.input}
+                                placeholder="Valor Do Pagamento"
+                                onChangeText={(valor) => this.setState({ valorPagamento: valor })}
+                                value={this.state.valorPagamento}
+                            />
+                            <View style={styles.bntRow}>
+                                <TouchableOpacity style={styles.btn} onPress={() => {
 
+                                    var data = new Date().getDate(); //Current Date
+                                    var month = new Date().getMonth() + 1; //Current Month
+                                    var year = new Date().getFullYear(); //Current Year
+                                    var hours = new Date().getHours(); //Current Hours
+                                    var min = new Date().getMinutes(); //Current Minutes
+                                    var seconds = new Date().getSeconds();
+
+                                    firebase.database().ref('clientes/' + this.state.id + '/conta/compras/').limitToLast(1).on('child_added', (snapshot) => {
+                                        // all records after the last continue to invoke this function
+                                        // get the last inserted key
+
+                                        idCompra = parseInt(snapshot.key) + 1;
+
+                                    }).bind(this);
+                                    const pagamento = {
+                                        comprador: this.state.comprador,
+                                        dataCompra: data + '/' + month + '/' + year + ' ' + hours + ':' + min + ':' + seconds,
+                                        funcionario: "default",
+                                        idCompra: idCompra,
+                                        valorPagamento: parseFloat(this.state.valorPagamento),
+                                        status: 'Pagamento'
+                                    }
+                                    console.log(pagamento.valorPagamento)
+                                    console.log(this.state.totalPagar)
+                                    if (pagamento.valorPagamento <= this.state.totalPagar) {
+                                        firebase.database().ref('clientes/' + this.state.id + '/conta/compras/' + idCompra).set(
+                                            pagamento
+                                        ).then(() => {
+                                            const saldoPagamento = this.state.saldo + pagamento.valorPagamento
+                                            const totalPagarReal = this.state.limiteConta - saldoPagamento
+                                            const totalPagarArrendondado = totalPagarReal.toFixed(2)
+                                            firebase.database().ref('clientes/' + this.state.id + '/conta/').update(
+                                                {
+                                                    saldo: saldoPagamento.toFixed(2),
+                                                    totalPagar: totalPagarArrendondado,
+                                                }
+
+                                            ).then(() => {
+                                                this.setState({ saldo: saldoPagamento.toFixed(2) })
+                                                this.setState({ totalPagar: totalPagarArrendondado })
+                                                this.setState({ pagarVisible: false })
+                                                this.setState({ valorPagamento: 0 })
+                                                Alert.alert('Pagamento concluído com sucesso!')
+
+                                            }).catch((error) => {
+                                                console.log(error)
+                                            })
+                                        }).catch((error) => {
+                                            console.log(error)
+                                        })
+
+                                    }
+                                    else {
+                                        Alert.alert('Valor do pagamento é maior que o total a')
+                                    }
+
+                                }}>
+                                    <Text style={{ color: 'white', fontWeight: "bold" }}> Adicionar conta </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.btn} onPress={() => {
+                                    this.setState({ pagarVisible: false })
+                                }}>
+                                    <Text style={{ color: 'white', fontWeight: "bold" }}> Sair </Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
                 <View>
                     <Text>nome: {this.state.nome} </Text>
                     <Text>Limite: {this.state.limiteConta}</Text>
@@ -181,18 +267,33 @@ class ClientPage extends React.Component {
                     }}>
                         <ComprarVender icon="plus" titulo="Comprar" ></ComprarVender>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                        this.setState({ pagarVisible: true })
+                    }}>
                         <ComprarVender icon="hand-holding-usd" titulo="Pagar" ></ComprarVender>
                     </TouchableOpacity>
                 </View>
                 <ScrollView>
                     {this.state.Extrato.map((extrato) => {
-                        return <View style={styles.extrato}>
-                            <Text style={{ color: 'white', fontWeight: "bold" }}>{"Comprador: " + extrato.comprador}</Text>
-                            <Text style={{ color: 'white', fontWeight: "bold" }}>{"Valor " + extrato.valorCompra}</Text>
-                            <Text style={{ color: 'white', fontWeight: "bold" }}>{"Data: " + extrato.dataCompra}</Text>
-                            <Text style={{ color: 'white', fontWeight: "bold" }}>Status:Statico</Text>
-                        </View>
+                        console.log(extrato)
+                        if (extrato.status == 'pagamento') {
+                            console.log("status: " + extrato.status + " valor: " + extrato.valorPagamento)
+                            return <View style={styles.extrato}>
+                                <Text style={{ color: 'white', fontWeight: "bold" }}>{"Comprador: " + extrato.comprador}</Text>
+                                <Text style={{ color: 'white', fontWeight: "bold" }}>{"Valor " + extrato.valorPagamento}</Text>
+                                <Text style={{ color: 'white', fontWeight: "bold" }}>{"Data: " + extrato.dataCompra}</Text>
+                                <Text style={{ color: 'white', fontWeight: "bold" }}>Status:{extrato.status}</Text>
+                            </View>
+                        }
+                        else {
+                            console.log("status: " + extrato.status + " valor: " + extrato.valorCompra)
+                            return <View style={styles.extrato}>
+                                <Text style={{ color: 'white', fontWeight: "bold" }}>{"Comprador: " + extrato.comprador}</Text>
+                                <Text style={{ color: 'white', fontWeight: "bold" }}>{"Valor " + extrato.valorCompra}</Text>
+                                <Text style={{ color: 'white', fontWeight: "bold" }}>{"Data: " + extrato.dataCompra}</Text>
+                                <Text style={{ color: 'white', fontWeight: "bold" }}>Status:{extrato.status}</Text>
+                            </View>
+                        }
                     })}
                 </ScrollView>
             </View>
