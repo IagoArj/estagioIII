@@ -12,15 +12,16 @@ const ComprarVender = props => {
 }
 const styles = StyleSheet.create({
     backgroundCard: {
-        backgroundColor: '#641e82',
-        width: 150,
-        height: 150,
+        backgroundColor: '#22B573',
+        width: 155,
+        height: 125,
         justifyContent:'center',
         alignItems: "center",
         marginBottom:30,
         marginRight:15,
         marginLeft:15,
-        borderRadius:10
+        borderRadius:10,
+        marginTop:15
     },
     text: {
         marginTop:10,

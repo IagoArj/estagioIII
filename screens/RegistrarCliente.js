@@ -3,44 +3,42 @@ import firebase from 'firebase';
 import { View, TextInput, TouchableOpacity, Text, ScrollView, StyleSheet } from 'react-native';
 
 const RegistrarCliente = props => {
-    
+
     state = {
         nomeState: nome,
         telefoneState: telefone,
         limiteContaState: limiteConta,
-        permissaoState: permissao
     }
-    
-    var [nome, onChangeNome] = React.useState('Nome');
-    var [telefone, onChangeTelefone] = React.useState("Telefone");
+
+    var [nome, onChangeNome] = React.useState('');
+    var [telefone, onChangeTelefone] = React.useState("");
     var [limiteConta, onChangeLimiteConta] = React.useState(0);
-    var [permissao, onChangePermissao] = React.useState('Permissão');
-    var [endereco, onChangeEndereco] = React.useState("Endereço")
-   
+    var [endereco, onChangeEndereco] = React.useState("")
+
     return (
-        
-        <View>
+
+        <View style={{alignItems:"center"}}>
             <TextInput style={styles.input}
                 onChangeText={text => onChangeNome(text)}
                 value={nome}
+                placeholder="Nome"
             />
             <TextInput style={styles.input}
                 onChangeText={text => onChangeTelefone(text)}
                 keyboardType='numeric'
                 value={telefone}
+                placeholder="Telefone"
             />
             <TextInput style={styles.input}
                 onChangeText={text => onChangeLimiteConta(text)}
                 value={limiteConta}
                 keyboardType='numeric'
-            />
-            <TextInput style={styles.input}
-                onChangeText={text => onChangePermissao(text)}
-                value={permissao}
+                placeholder="Limite"
             />
             <TextInput style={styles.input}
                 onChangeText={text => onChangeEndereco(text)}
                 value={endereco}
+                placeholder="Endereço"
             />
             <TouchableOpacity style={styles.btn} onPress={() => {
 
@@ -54,8 +52,8 @@ const RegistrarCliente = props => {
                 firebase.database().ref('clientes/').limitToLast(1).on('child_added', (snapshot) => {
                     // all records after the last continue to invoke this function
                     // get the last inserted key
-                    
-                    idUsuario=parseInt(snapshot.key) +1 ;
+
+                    idUsuario = parseInt(snapshot.key) + 1;
                     console.log(idUsuario)
                 }).bind(this);
                 const cliente = {
@@ -64,7 +62,6 @@ const RegistrarCliente = props => {
                     telefone: telefone,
                     dataConta: data + '/' + month + '/' + year + ' ' + hours + ':' + min + ':' + seconds,
                     endereco: endereco,
-                    autCompra: [permissao],
                     ultimaCompra: '',
                     conta: {
                         limiteConta: limiteConta,
@@ -94,7 +91,7 @@ const RegistrarCliente = props => {
                 })
             }
             } >
-                <Text style={{ color: 'white', fontWeight: "bold" }}> criar </Text>
+                <Text style={{ color: 'white', fontWeight: "bold" ,fontSize:18 }}> criar </Text>
             </TouchableOpacity>
         </View>
     )
@@ -103,24 +100,35 @@ RegistrarCliente.navigationOptions = {
     title: 'Registrar Cliente',
     headerTintColor: '#fff',
     headerStyle: {
-        backgroundColor: '#641e82',
+        backgroundColor: '#22B573',
     }
 };
 const styles = StyleSheet.create({
     input: {
-        backgroundColor: '#531a6b',
-        width: 300,
-        marginTop: 15,
+        backgroundColor: '#F9F9F9',
+        width: 350,
+        height: 40,
+        marginTop: 25,
         borderWidth: 0.1,
         borderColor: "#c4e092",
         paddingHorizontal: 30,
         paddingVertical: 5,
         borderRadius: 30,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+
+        elevation: 3,
     },
     btn: {
-        width: 200,
+        width: 225,
+        height:45,
         alignItems: 'center',
-        backgroundColor: '#b300ff',
+        backgroundColor: '#22B573',
         padding: 10,
         marginTop: 20,
         borderRadius: 30

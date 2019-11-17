@@ -45,7 +45,7 @@ HomeScreen.navigationOptions = {
     title: 'Menu',
     headerTintColor: '#fff',
     headerStyle: {
-        backgroundColor: '#641e82',
+        backgroundColor: '#22B573',
     }
 };
 
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     containerMenu: {
-        justifyContent: "center",
+        
         alignItems: "center",
         flexDirection: 'row',
         flexWrap: 'wrap'

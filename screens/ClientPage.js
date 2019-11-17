@@ -12,30 +12,56 @@ const styles = StyleSheet.create({
         marginTop: 15,
         borderRadius: 10
     }, input: {
-        backgroundColor: '#531a6b',
+        backgroundColor: '#F9F9F9',
         width: 300,
+        height: 40,
         marginTop: 15,
-        borderWidth: 0.1,
-        borderColor: "#c4e092",
         paddingHorizontal: 30,
         paddingVertical: 5,
         borderRadius: 30,
-    }, btn: {
-        width: 150,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+
+        elevation: 3,
+    }, btnGreen: {
+        width: 250,
         alignItems: 'center',
-        backgroundColor: '#b300ff',
+        backgroundColor: '#22B573',
         padding: 10,
-        marginTop: 20,
+        marginTop: 22,
+        marginLeft: 2.5,
+        borderRadius: 30,
+    },
+    btnRed: {
+        width: 250,
+        alignItems: 'center',
+        backgroundColor: '#E43E6B',
+        padding: 10,
+        marginTop: 22,
         marginLeft: 2.5,
         borderRadius: 30
     },
     modal: {
         marginTop: 150,
-        backgroundColor: "#FEF8FC",
+        backgroundColor: "#fff",
         width: 350,
-        height: 350,
+        height: 300,
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+
+        elevation: 3,
     }, modalCentralizado: {
         justifyContent: "center",
         alignItems: "center"
@@ -45,12 +71,35 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
 
     }, bntRow: {
-        flexDirection: 'row'
+        alignItems: "center",
+        flexDirection: "column"
     }, extrato: {
-        backgroundColor: '#641e82',
+        backgroundColor: '#F9F9F9',
         marginTop: 15,
-        width: 300,
-        justifyContent: 'space-around'
+        width: 350,
+        marginLeft: 30
+    }, infoCard: {
+        marginTop: 15,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: '#F9F9F9',
+        width: 350,
+        borderRadius: 12,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+
+        elevation: 3,
+    },
+    saldoInfo: {
+        justifyContent: "space-around",
+        flexDirection: "row",
+        marginBottom: 15,
+        marginTop: 15
     }
 })
 class ClientPage extends React.Component {
@@ -87,20 +136,15 @@ class ClientPage extends React.Component {
                         Alert.alert('Modal has been closed.');
                     }}><View style={styles.modalCentralizado}>
                         <View style={styles.modal}>
-                            <View>
-                                <TextInput style={styles.input}
-                                    placeholder="Comprador"
-                                    onChangeText={(comprador) => this.setState({ comprador: comprador })}
-                                    value={this.state.comprador}
-                                />
-
+                            <View style={{ alignItems: 'center' }}>
+                                <Text style={{ fontSize: 22, color: '#707070' }}>Compra</Text>
                                 <TextInput keyboardType="numeric" style={styles.input}
-                                    placeholder="Valor da compra"
+                                    placeholder="Valor"
                                     onChangeText={(valor) => this.setState({ valorCompra: valor })}
                                     value={this.state.valorCompra}
                                 />
                                 <View style={styles.bntRow}>
-                                    <TouchableOpacity style={styles.btn} onPress={() => {
+                                    <TouchableOpacity style={styles.btnGreen} onPress={() => {
 
                                         var data = new Date().getDate(); //Current Date
                                         var month = new Date().getMonth() + 1; //Current Month
@@ -117,7 +161,6 @@ class ClientPage extends React.Component {
 
                                         }).bind(this);
                                         const compra = {
-                                            comprador: this.state.comprador,
                                             dataCompra: data + '/' + month + '/' + year + ' ' + hours + ':' + min + ':' + seconds,
                                             funcionario: "default",
                                             idCompra: idCompra,
@@ -157,13 +200,13 @@ class ClientPage extends React.Component {
                                         }
 
                                     }}>
-                                        <Text style={{ color: 'white', fontWeight: "bold" }}> Adicionar conta </Text>
+                                        <Text style={{ color: 'white', fontWeight: "bold" }}> Adicionar </Text>
                                     </TouchableOpacity>
 
-                                    <TouchableOpacity style={styles.btn} onPress={() => {
+                                    <TouchableOpacity style={styles.btnRed} onPress={() => {
                                         this.setState({ comprarVisible: false })
                                     }}>
-                                        <Text style={{ color: 'white', fontWeight: "bold" }}> Sair </Text>
+                                        <Text style={{ color: 'white', fontWeight: "bold" }}> Cancelar </Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -179,13 +222,14 @@ class ClientPage extends React.Component {
                     }}>
                     <View style={styles.modalCentralizado}>
                         <View style={styles.modal}>
+                            <Text style={{ fontSize: 22, color: '#707070' }}>Pagamento</Text>
                             <TextInput keyboardType="numeric" style={styles.input}
                                 placeholder="Valor Do Pagamento"
                                 onChangeText={(valor) => this.setState({ valorPagamento: valor })}
                                 value={this.state.valorPagamento}
                             />
                             <View style={styles.bntRow}>
-                                <TouchableOpacity style={styles.btn} onPress={() => {
+                                <TouchableOpacity style={styles.btnGreen} onPress={() => {
 
                                     var data = new Date().getDate(); //Current Date
                                     var month = new Date().getMonth() + 1; //Current Month
@@ -211,7 +255,7 @@ class ClientPage extends React.Component {
                                     }
                                     console.log(pagamento.valorPagamento)
                                     console.log(this.state.totalPagar)
-                                    if (pagamento.valorPagamento <= this.state.totalPagar) {
+                                    if (pagamento.valorPagamento <= this.state.totalPagar && pagamento.valorPagamento > 0) {
                                         firebase.database().ref('clientes/' + this.state.id + '/conta/compras/' + idCompra).set(
                                             pagamento
                                         ).then(() => {
@@ -240,26 +284,30 @@ class ClientPage extends React.Component {
 
                                     }
                                     else {
-                                        Alert.alert('Valor do pagamento é maior que o total a')
+                                        Alert.alert('Não foi possivel concluir')
                                     }
 
                                 }}>
-                                    <Text style={{ color: 'white', fontWeight: "bold" }}> Adicionar conta </Text>
+                                    <Text style={{ color: 'white', fontWeight: "bold" }}> Adicionar</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.btn} onPress={() => {
+                                <TouchableOpacity style={styles.btnRed} onPress={() => {
                                     this.setState({ pagarVisible: false })
                                 }}>
-                                    <Text style={{ color: 'white', fontWeight: "bold" }}> Sair </Text>
+                                    <Text style={{ color: 'white', fontWeight: "bold" }}> Cancelar </Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
                     </View>
                 </Modal>
-                <View>
-                    <Text>nome: {this.state.nome} </Text>
-                    <Text>Limite: {this.state.limiteConta}</Text>
-                    <Text>Saldo: {this.state.saldo}</Text>
-                    <Text>Pagar: {this.state.totalPagar}</Text>
+                <View style={{ alignItems: "center" }}>
+                    <View style={styles.infoCard}>
+                        <Text style={{ color: '#707070', fontSize: 18, marginBottom: 10, marginTop: 15 }}>{this.state.nome} </Text>
+                        <Text style={{ color: '#707070', fontWeight: 'bold', fontSize: 12 }}>Limite: R$ {this.state.limiteConta}</Text>
+                        <View style={styles.saldoInfo}>
+                            <Text style={{ marginRight: 15, color: '#45AE50', fontWeight: 'bold', fontSize: 12 }}>Saldo: R$ {this.state.saldo}</Text>
+                            <Text style={{ color: '#DE3A3A', fontWeight: 'bold', fontSize: 12 }}>Pagar: R$ {this.state.totalPagar}</Text>
+                        </View>
+                    </View>
                 </View>
                 <View style={styles.btnBox}>
                     <TouchableOpacity onPress={() => {
@@ -276,22 +324,24 @@ class ClientPage extends React.Component {
                 <ScrollView>
                     {this.state.Extrato.map((extrato) => {
                         console.log(extrato)
-                        if (extrato.status == 'pagamento') {
+                        if (extrato.status === 'pagamento') {
                             console.log("status: " + extrato.status + " valor: " + extrato.valorPagamento)
                             return <View style={styles.extrato}>
-                                <Text style={{ color: 'white', fontWeight: "bold" }}>{"Comprador: " + extrato.comprador}</Text>
-                                <Text style={{ color: 'white', fontWeight: "bold" }}>{"Valor " + extrato.valorPagamento}</Text>
+                                <View style={{ justifyContent: "space-between", flexDirection: 'row', margin: 15 }}>
+                                    <Text style={{ color: 'white', fontWeight: "bold" }}>{"Valor " + extrato.valorPagamento}</Text>
+                                    <Text style={{ color: 'white', fontWeight: "bold" }}>{extrato.status}</Text>
+                                </View>
                                 <Text style={{ color: 'white', fontWeight: "bold" }}>{"Data: " + extrato.dataCompra}</Text>
-                                <Text style={{ color: 'white', fontWeight: "bold" }}>Status:{extrato.status}</Text>
                             </View>
                         }
                         else {
                             console.log("status: " + extrato.status + " valor: " + extrato.valorCompra)
                             return <View style={styles.extrato}>
-                                <Text style={{ color: 'white', fontWeight: "bold" }}>{"Comprador: " + extrato.comprador}</Text>
-                                <Text style={{ color: 'white', fontWeight: "bold" }}>{"Valor " + extrato.valorCompra}</Text>
-                                <Text style={{ color: 'white', fontWeight: "bold" }}>{"Data: " + extrato.dataCompra}</Text>
-                                <Text style={{ color: 'white', fontWeight: "bold" }}>Status:{extrato.status}</Text>
+                                <View style={{ justifyContent: "space-between", flexDirection: 'row', margin: 15 }}>
+                                    <Text style={{ color: '#22B573', fontWeight: "bold", fontSize: 18 }}>{"R$ " + extrato.valorCompra}</Text>
+                                    <Text style={{ color: '#707070', fontWeight: "bold" }}>{extrato.status}</Text>
+                                </View>
+                                <Text style={{ color: '#707070', fontWeight: "bold", marginLeft: 15, marginBottom: 15 }}>{extrato.dataCompra}</Text>
                             </View>
                         }
                     })}
@@ -304,7 +354,7 @@ ClientPage.navigationOptions = {
     title: 'Cliente',
     headerTintColor: '#fff',
     headerStyle: {
-        backgroundColor: '#641e82',
+        backgroundColor: '#22B573',
     }
 };
 export default ClientPage;

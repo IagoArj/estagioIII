@@ -9,16 +9,15 @@ var height = Dimensions.get('window').height; //full heigh
 
 const styles = StyleSheet.create({
     inputBox: {
-        marginLeft: width / 7.3,
+        marginLeft:30
     },
     clientBox: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'center'
+        flexDirection: "column",
+        width:375,
     },
     input: {
-        backgroundColor: '#531a6b',
-        width: 300,
+        backgroundColor: '#fff',
+        width: 350,
         height: 50,
         marginTop: 15,
         borderWidth: 0.1,
@@ -26,8 +25,20 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30,
         paddingVertical: 5,
         borderRadius: 30,
-        marginBottom: 40
+        marginBottom: 40,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+
+        elevation: 3,
     },
+    cliente:{
+        marginLeft:40
+    }
 })
 
 
@@ -49,9 +60,10 @@ class Clients extends React.Component {
 
         //var [nome, onChangeNome] = React.useState('pesquisar');
         return (
-            <ScrollView >
+            <ScrollView>
                 <View style={styles.inputBox}>
                     <TextInput style={styles.input}
+                        placeholder="Procurar..."
                         onChangeText={text => onChangeNome(text)}
                     />
                 </View>
@@ -59,13 +71,13 @@ class Clients extends React.Component {
                     {this.state.Clientes.map((cliente) => {
                         return <TouchableOpacity style={styles.cliente} onPress={() =>
                             this.props.navigation.navigate('ClientPage', {
-                                cliente:cliente
-                                
+                                cliente: cliente
+
 
                             })
-                            
+
                         }>
-                            <ClientBox id ={cliente.id} nome={cliente.nome} totalPagar={cliente.conta.totalPagar}></ClientBox>
+                            <ClientBox id={cliente.id} nome={cliente.nome} totalPagar={cliente.conta.totalPagar}></ClientBox>
 
                         </TouchableOpacity>
                     })}
@@ -81,6 +93,10 @@ class Clients extends React.Component {
 
 }
 Clients.navigationOptions = {
-    header: null
+    title: 'Clientes',
+    headerTintColor: '#fff',
+    headerStyle: {
+        backgroundColor: '#22B573',
+    }
 };
 export default Clients;
