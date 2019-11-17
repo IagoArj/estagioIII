@@ -153,6 +153,14 @@ class ClientPage extends React.Component {
                                         var min = new Date().getMinutes(); //Current Minutes
                                         var seconds = new Date().getSeconds();
 
+                                        firebase.database().ref('relatorios/diario/compra').limitToLast(1).on('child_added', (snapshot) => {
+                                            // all records after the last continue to invoke this function
+                                            // get the last inserted key
+
+                                            idRelatorioCompra = parseInt(snapshot.key) + 1;
+                                            console.log(idRelatorioCompra)
+                                        }).bind(this);
+
                                         firebase.database().ref('clientes/' + this.state.id + '/conta/compras/').limitToLast(1).on('child_added', (snapshot) => {
                                             // all records after the last continue to invoke this function
                                             // get the last inserted key
@@ -160,6 +168,7 @@ class ClientPage extends React.Component {
                                             idCompra = parseInt(snapshot.key) + 1;
 
                                         }).bind(this);
+
                                         const compra = {
                                             dataCompra: data + '/' + month + '/' + year + ' ' + hours + ':' + min + ':' + seconds,
                                             funcionario: "default",
@@ -167,7 +176,6 @@ class ClientPage extends React.Component {
                                             valorCompra: parseFloat(this.state.valorCompra),
                                             status: 'compra'
                                         }
-
                                         if (compra.valorCompra <= this.state.saldo) {
                                             firebase.database().ref('clientes/' + this.state.id + '/conta/compras/' + idCompra).set(
                                                 compra
@@ -186,14 +194,12 @@ class ClientPage extends React.Component {
                                                     this.setState({ totalPagar: totalPagarArrendondado })
                                                     this.setState({ compraVisible: false })
                                                     Alert.alert('Compra concluída com sucesso!')
-
                                                 }).catch((error) => {
                                                     console.log(error)
                                                 })
                                             }).catch((error) => {
                                                 console.log(error)
                                             })
-
                                         }
                                         else {
                                             Alert.alert('Saldo insuficiente')
@@ -275,6 +281,7 @@ class ClientPage extends React.Component {
                                                 this.setState({ valorPagamento: 0 })
                                                 Alert.alert('Pagamento concluído com sucesso!')
 
+
                                             }).catch((error) => {
                                                 console.log(error)
                                             })
@@ -299,47 +306,47 @@ class ClientPage extends React.Component {
                         </View>
                     </View>
                 </Modal>
-                <View style={{ alignItems: "center" }}>
-                    <View style={styles.infoCard}>
-                        <Text style={{ color: '#707070', fontSize: 18, marginBottom: 10, marginTop: 15 }}>{this.state.nome} </Text>
-                        <Text style={{ color: '#707070', fontWeight: 'bold', fontSize: 12 }}>Limite: R$ {this.state.limiteConta}</Text>
-                        <View style={styles.saldoInfo}>
-                            <Text style={{ marginRight: 15, color: '#45AE50', fontWeight: 'bold', fontSize: 12 }}>Saldo: R$ {this.state.saldo}</Text>
-                            <Text style={{ color: '#DE3A3A', fontWeight: 'bold', fontSize: 12 }}>Pagar: R$ {this.state.totalPagar}</Text>
+                <ScrollView>
+                    <View style={{ alignItems: "center" }}>
+                        <View style={styles.infoCard}>
+                            <Text style={{ color: '#707070', fontSize: 18, marginBottom: 10, marginTop: 15 }}>{this.state.nome} </Text>
+                            <Text style={{ color: '#707070', fontWeight: 'bold', fontSize: 12 }}>Limite: R$ {this.state.limiteConta}</Text>
+                            <View style={styles.saldoInfo}>
+                                <Text style={{ marginRight: 15, color: '#45AE50', fontWeight: 'bold', fontSize: 12 }}>Saldo: R$ {this.state.saldo}</Text>
+                                <Text style={{ color: '#DE3A3A', fontWeight: 'bold', fontSize: 12 }}>Pagar: R$ {this.state.totalPagar}</Text>
+                            </View>
                         </View>
                     </View>
-                </View>
-                <View style={styles.btnBox}>
-                    <TouchableOpacity onPress={() => {
-                        this.setState({ comprarVisible: true })
-                    }}>
-                        <ComprarVender icon="plus" titulo="Comprar" ></ComprarVender>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => {
-                        this.setState({ pagarVisible: true })
-                    }}>
-                        <ComprarVender icon="hand-holding-usd" titulo="Pagar" ></ComprarVender>
-                    </TouchableOpacity>
-                </View>
-                <ScrollView>
+                    <View style={styles.btnBox}>
+                        <TouchableOpacity onPress={() => {
+                            this.setState({ comprarVisible: true })
+                        }}>
+                            <ComprarVender icon="plus" titulo="Comprar" ></ComprarVender>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => {
+                            this.setState({ pagarVisible: true })
+                        }}>
+                            <ComprarVender icon="hand-holding-usd" titulo="Pagar" ></ComprarVender>
+                        </TouchableOpacity>
+                    </View>
+
                     {this.state.Extrato.map((extrato) => {
-                        console.log(extrato)
-                        if (extrato.status === 'pagamento') {
-                            console.log("status: " + extrato.status + " valor: " + extrato.valorPagamento)
+                        console.log(extrato.status)
+                        if (extrato.status == 'Pagamento') {
+
                             return <View style={styles.extrato}>
                                 <View style={{ justifyContent: "space-between", flexDirection: 'row', margin: 15 }}>
-                                    <Text style={{ color: 'white', fontWeight: "bold" }}>{"Valor " + extrato.valorPagamento}</Text>
-                                    <Text style={{ color: 'white', fontWeight: "bold" }}>{extrato.status}</Text>
+                                    <Text style={{ color: '#22B573', fontWeight: "bold", fontSize: 18 }}>{"R$ " + extrato.valorPagamento}</Text>
+                                    <Text style={{ color: '#22B573', fontWeight: "bold" }}>pagamento</Text>
                                 </View>
-                                <Text style={{ color: 'white', fontWeight: "bold" }}>{"Data: " + extrato.dataCompra}</Text>
+                                <Text style={{ color: '#707070', fontWeight: "bold", marginLeft: 15, marginBottom: 15 }}>{"Data: " + extrato.dataCompra}</Text>
                             </View>
                         }
                         else {
-                            console.log("status: " + extrato.status + " valor: " + extrato.valorCompra)
                             return <View style={styles.extrato}>
                                 <View style={{ justifyContent: "space-between", flexDirection: 'row', margin: 15 }}>
                                     <Text style={{ color: '#22B573', fontWeight: "bold", fontSize: 18 }}>{"R$ " + extrato.valorCompra}</Text>
-                                    <Text style={{ color: '#707070', fontWeight: "bold" }}>{extrato.status}</Text>
+                                    <Text style={{ color: '#707070', fontWeight: "bold" }}>compra</Text>
                                 </View>
                                 <Text style={{ color: '#707070', fontWeight: "bold", marginLeft: 15, marginBottom: 15 }}>{extrato.dataCompra}</Text>
                             </View>

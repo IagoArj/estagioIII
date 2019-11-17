@@ -17,7 +17,8 @@ const styles = StyleSheet.create({
     cliente: {
         flexDirection: "column",
         backgroundColor: '#F9F9F9',
-        marginTop: 15,
+        marginTop: 7.5,
+        marginBottom:7.5,
         marginLeft: 2.5,
         marginRight: 2.5,
         borderRadius: 10,

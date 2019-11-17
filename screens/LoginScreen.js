@@ -71,7 +71,6 @@ class LoginScreen extends React.Component {
   componentDidMount() {
     firebase.database().ref('funcionario').on('value', (response) => {
       this.setState({ funcionarios: response.val() })
-      console.log(this.state.funcionarios)
     })
   }
   render() {
