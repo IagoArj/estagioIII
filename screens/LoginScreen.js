@@ -62,9 +62,8 @@ class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      login: 'Lucas',
-      senha: 'Lucas2019',
-      correct: false,
+      login: '',
+      senha: '',
       funcionarios: []
     }
   }
@@ -90,15 +89,19 @@ class LoginScreen extends React.Component {
           secureTextEntry={true}
         />
         <TouchableOpacity style={styles.btn} onPress={() => {
-
+          var logou = false
           this.state.funcionarios.map((func) => {
             if (func.login === this.state.login && func.senha === this.state.senha) {
               this.props.navigation.navigate({ routeName: 'Home' })
-              this.setState({ correct: true })
-              console.log(this.state.correct)
+              logou = true
+              this.setState({login:''})
+              this.setState({senha:''})
             }
           }
           )
+          if(logou==false){
+            Alert.alert("Usuário ou Senha incorretos")
+          }
         }
 
         } >

@@ -251,26 +251,24 @@ class ClientPage extends React.Component {
                                         idCompra = parseInt(snapshot.key) + 1;
 
                                     }).bind(this);
-
                                     const pagamento = {
+                                        comprador: this.state.comprador,
                                         dataCompra: data + '/' + month + '/' + year + ' ' + hours + ':' + min + ':' + seconds,
                                         funcionario: "default",
                                         idCompra: idCompra,
                                         valorPagamento: parseFloat(this.state.valorPagamento),
                                         status: 'Pagamento'
                                     }
-
+                                    console.log(pagamento.valorPagamento)
+                                    console.log(this.state.totalPagar)
                                     if (pagamento.valorPagamento <= this.state.totalPagar && pagamento.valorPagamento > 0) {
-                                        console.log('TOOOOOO AKKKKI')
-                                        console.log(pagamento)
-
                                         firebase.database().ref('clientes/' + this.state.id + '/conta/compras/' + idCompra).set(
                                             pagamento
                                         ).then(() => {
-                                            console.log('EEAAAAAAAAAAAAAAAIIIIIIIIIII')
-                                            var saldoPagamento = this.state.saldo + pagamento.valorPagamento
-                                            var totalPagarReal = this.state.limiteConta - saldoPagamento
-                                            var totalPagarArrendondado = totalPagarReal.toFixed(2)
+                                            const saldoPagamento = this.state.saldo + pagamento.valorPagamento
+                                            const totalPagarReal = this.state.limiteConta - saldoPagamento
+                                            const totalPagarArrendondado = totalPagarReal.toFixed(2)
+                                            
                                             firebase.database().ref('clientes/' + this.state.id + '/conta/').update(
                                                 {
                                                     saldo: saldoPagamento.toFixed(2),
@@ -278,12 +276,10 @@ class ClientPage extends React.Component {
                                                 }
 
                                             ).then(() => {
-                                                console.log(saldoPagamento.toFixed(2))
-                                                console.log(totalPagarArrendondado)
-
                                                 this.setState({ saldo: saldoPagamento.toFixed(2) })
                                                 this.setState({ totalPagar: totalPagarArrendondado })
                                                 this.setState({ pagarVisible: false })
+                                                this.setState({ valorPagamento: 0 })
                                                 Alert.alert('Pagamento concluído com sucesso!')
 
 
@@ -336,12 +332,13 @@ class ClientPage extends React.Component {
                     </View>
 
                     {this.state.Extrato.map((extrato) => {
+                        console.log(extrato.status)
                         if (extrato.status == 'Pagamento') {
 
                             return <View style={styles.extrato}>
                                 <View style={{ justifyContent: "space-between", flexDirection: 'row', margin: 15 }}>
                                     <Text style={{ color: '#22B573', fontWeight: "bold", fontSize: 18 }}>{"R$ " + extrato.valorPagamento}</Text>
-                                    <Text style={{ color: '#22B573', fontWeight: "bold" }}>pagamento</Text>
+                                    <Text style={{ color: '#22B573', fontWeight: "bold" }}>Pagamento</Text>
                                 </View>
                                 <Text style={{ color: '#707070', fontWeight: "bold", marginLeft: 15, marginBottom: 15 }}>{"Data: " + extrato.dataCompra}</Text>
                             </View>
@@ -350,7 +347,7 @@ class ClientPage extends React.Component {
                             return <View style={styles.extrato}>
                                 <View style={{ justifyContent: "space-between", flexDirection: 'row', margin: 15 }}>
                                     <Text style={{ color: '#22B573', fontWeight: "bold", fontSize: 18 }}>{"R$ " + extrato.valorCompra}</Text>
-                                    <Text style={{ color: '#707070', fontWeight: "bold" }}>compra</Text>
+                                    <Text style={{ color: '#707070', fontWeight: "bold" }}>Compra</Text>
                                 </View>
                                 <Text style={{ color: '#707070', fontWeight: "bold", marginLeft: 15, marginBottom: 15 }}>{extrato.dataCompra}</Text>
                             </View>

@@ -1,7 +1,29 @@
 import React from 'react';
 import { View, TextInput, TouchableOpacity, Text, ScrollView, StyleSheet } from 'react-native';
 import firebase from 'firebase';
-
+const styles = StyleSheet.create({
+    hearderDay:{
+        color:"#707070",
+        fontSize:22,
+        fontWeight: '800',
+        marginLeft:25,
+        marginTop:15
+    },
+    comprasTotal:{
+        color:"#707070",
+        fontSize:24,
+        fontWeight: 'bold',
+        marginLeft:45,
+        marginTop:10
+    },
+    valor:{
+        color:"#707070",
+        fontSize:20,
+        fontWeight: 'bold',
+        marginLeft:45,
+        marginTop:10
+    }
+})
 class Relatorios extends React.Component {
     constructor(props) {
         super(props);
@@ -30,7 +52,12 @@ class Relatorios extends React.Component {
         var comprasDoMes = 0;
         var comprasDoMesValor = 0;
         var pagamentosDoMes = 0;
-        var pagamentosDoMesValor = 0
+        var pagamentosDoMesValor = 0;
+        var comprasDoAno = 0;
+        var comprasDoAnoValor = 0;
+        var pagamentosDoAno = 0;
+        var pagamentosDoAnoValor = 0;
+
         this.state.clientes.map((cli) => {
             cli.conta.compras.map((compra) => {
                 var hoje = new Date();
@@ -68,6 +95,18 @@ class Relatorios extends React.Component {
                         pagamentosDoMesValor = pagamentosDoMesValor + compra.valorPagamento
                     }
                 }
+                if (hoje.getFullYear().toString() == data[2]) {
+                    if (compra.status == 'compra') {
+
+                        comprasDoAno += 1;
+                        comprasDoAnoValor = comprasDoAnoValor + compra.valorCompra
+                    }
+                    if (compra.status == 'Pagamento') {
+                        pagamentosDoAno += 1;
+                        pagamentosDoAnoValor = pagamentosDoAnoValor + compra.valorPagamento
+                    }
+                }
+
             })
         })
         this.setState({ comprasDoDia: comprasDoDia })
@@ -78,19 +117,36 @@ class Relatorios extends React.Component {
         this.setState({ comprasDoMesValor: comprasDoMesValor.toFixed(2) })
         this.setState({ pagamentosDoMes: pagamentosDoMes })
         this.setState({ pagamentosDoMesValor: pagamentosDoMesValor.toFixed(2) })
+        this.setState({ comprasDoAno: comprasDoAno })
+        this.setState({ comprasDoAnoValor: comprasDoAnoValor.toFixed(2) })
+        this.setState({ pagamentosDoAno: pagamentosDoAno })
+        this.setState({ pagamentosDoAnoValor: pagamentosDoAnoValor.toFixed(2) })
     }
 
     render() {
         return (
             <View>
-                <Text>Todas as transações do Dia {this.state.comprasDoDia}  </Text>
-                <Text>Total de Vendas diaria {this.state.comprasDoDiaValor}</Text>
-                <Text>Total de Pagamentos do dia {this.state.pagamentosDoDia}</Text>
-                <Text>Total de Pagamentos {this.state.pagamentosDoDiaValor}</Text>
-                <Text>Todas as transações do mes {this.state.comprasDoMes}  </Text>
-                <Text>Total de Vendas mensal {this.state.comprasDoMesValor}</Text>
-                <Text>Total de Pagamentos do mes {this.state.pagamentosDoMes}</Text>
-                <Text>Total de Pagamentos mensais{this.state.pagamentosDoMesValor}</Text>
+                <View>
+                    <Text style={styles.hearderDay}>Diário</Text>
+                    <Text style={styles.comprasTotal}>{this.state.comprasDoDia} Compras </Text>
+                    <Text style={styles.comprasTotal}>{this.state.pagamentosDoDia} Pagamentos </Text>
+                    <Text style={styles.valor}>Vendas: R$ {this.state.comprasDoDiaValor}</Text>
+                    <Text style={styles.valor}>Pago: R$ {this.state.pagamentosDoDiaValor}</Text>
+                </View>
+                <View>
+                    <Text style={styles.hearderDay}>Mensal</Text>
+                    <Text style={styles.comprasTotal}>{this.state.comprasDoMes} Compras </Text>
+                    <Text style={styles.valor}>Vendas: R$ {this.state.comprasDoMesValor}</Text>
+                    <Text style={styles.comprasTotal}>{this.state.pagamentosDoMes} Pagamentos</Text>
+                    <Text style={styles.valor}>Pago: R$ {this.state.pagamentosDoMesValor}</Text>
+                </View>
+                <View>
+                    <Text style={styles.hearderDay}>Anual</Text>
+                    <Text style={styles.comprasTotal}>{this.state.comprasDoAno} Compras </Text>
+                    <Text style={styles.valor}>Vendas: R$ {this.state.comprasDoAnoValor}</Text>
+                    <Text style={styles.comprasTotal}>{this.state.pagamentosDoAno} Pagamentos</Text>
+                    <Text style={styles.valor}>Pago: R$ {this.state.pagamentosDoAnoValor}</Text>
+                </View>
             </View>
         );
     }
@@ -99,7 +155,7 @@ Relatorios.navigationOptions = {
     title: 'Relatórios',
     headerTintColor: '#fff',
     headerStyle: {
-        backgroundColor: '#641e82',
+        backgroundColor: '#22B573',
     }
 };
 export default Relatorios;
