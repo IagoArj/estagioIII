@@ -259,8 +259,7 @@ class ClientPage extends React.Component {
                                         valorPagamento: parseFloat(this.state.valorPagamento),
                                         status: 'Pagamento'
                                     }
-                                    console.log(pagamento.valorPagamento)
-                                    console.log(this.state.totalPagar)
+
                                     if (pagamento.valorPagamento <= this.state.totalPagar && pagamento.valorPagamento > 0) {
                                         firebase.database().ref('clientes/' + this.state.id + '/conta/compras/' + idCompra).set(
                                             pagamento
@@ -331,7 +330,6 @@ class ClientPage extends React.Component {
                     </View>
 
                     {this.state.Extrato.map((extrato) => {
-                        console.log(extrato.status)
                         if (extrato.status == 'Pagamento') {
 
                             return <View style={styles.extrato}>
