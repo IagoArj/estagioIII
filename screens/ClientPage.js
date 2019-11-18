@@ -192,7 +192,7 @@ class ClientPage extends React.Component {
                                                 ).then(() => {
                                                     this.setState({ saldo: saldoReal.toFixed(2) })
                                                     this.setState({ totalPagar: totalPagarArrendondado })
-                                                    this.setState({ compraVisible: false })
+                                                    this.setState({ comprarVisible: false })
                                                     Alert.alert('Compra concluída com sucesso!')
                                                 }).catch((error) => {
                                                     console.log(error)
@@ -251,8 +251,8 @@ class ClientPage extends React.Component {
                                         idCompra = parseInt(snapshot.key) + 1;
 
                                     }).bind(this);
+
                                     const pagamento = {
-                                        comprador: this.state.comprador,
                                         dataCompra: data + '/' + month + '/' + year + ' ' + hours + ':' + min + ':' + seconds,
                                         funcionario: "default",
                                         idCompra: idCompra,
@@ -261,12 +261,16 @@ class ClientPage extends React.Component {
                                     }
 
                                     if (pagamento.valorPagamento <= this.state.totalPagar && pagamento.valorPagamento > 0) {
+                                        console.log('TOOOOOO AKKKKI')
+                                        console.log(pagamento)
+
                                         firebase.database().ref('clientes/' + this.state.id + '/conta/compras/' + idCompra).set(
                                             pagamento
                                         ).then(() => {
-                                            const saldoPagamento = this.state.saldo + pagamento.valorPagamento
-                                            const totalPagarReal = this.state.limiteConta - saldoPagamento
-                                            const totalPagarArrendondado = totalPagarReal.toFixed(2)
+                                            console.log('EEAAAAAAAAAAAAAAAIIIIIIIIIII')
+                                            var saldoPagamento = this.state.saldo + pagamento.valorPagamento
+                                            var totalPagarReal = this.state.limiteConta - saldoPagamento
+                                            var totalPagarArrendondado = totalPagarReal.toFixed(2)
                                             firebase.database().ref('clientes/' + this.state.id + '/conta/').update(
                                                 {
                                                     saldo: saldoPagamento.toFixed(2),
@@ -274,10 +278,12 @@ class ClientPage extends React.Component {
                                                 }
 
                                             ).then(() => {
+                                                console.log(saldoPagamento.toFixed(2))
+                                                console.log(totalPagarArrendondado)
+
                                                 this.setState({ saldo: saldoPagamento.toFixed(2) })
                                                 this.setState({ totalPagar: totalPagarArrendondado })
                                                 this.setState({ pagarVisible: false })
-                                                this.setState({ valorPagamento: 0 })
                                                 Alert.alert('Pagamento concluído com sucesso!')
 
 
