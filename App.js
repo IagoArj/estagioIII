@@ -14,7 +14,7 @@ export default function App() {
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
-  
+  console.disableYellowBox = true
   return (
     <AllNavigator />
   )
