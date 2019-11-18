@@ -136,15 +136,15 @@ class Relatorios extends React.Component {
                 <View>
                     <Text style={styles.hearderDay}>Mensal</Text>
                     <Text style={styles.comprasTotal}>{this.state.comprasDoMes} Compras </Text>
-                    <Text style={styles.valor}>Vendas: R$ {this.state.comprasDoMesValor}</Text>
                     <Text style={styles.comprasTotal}>{this.state.pagamentosDoMes} Pagamentos</Text>
+                    <Text style={styles.valor}>Vendas: R$ {this.state.comprasDoMesValor}</Text>        
                     <Text style={styles.valor}>Pago: R$ {this.state.pagamentosDoMesValor}</Text>
                 </View>
                 <View>
                     <Text style={styles.hearderDay}>Anual</Text>
                     <Text style={styles.comprasTotal}>{this.state.comprasDoAno} Compras </Text>
-                    <Text style={styles.valor}>Vendas: R$ {this.state.comprasDoAnoValor}</Text>
                     <Text style={styles.comprasTotal}>{this.state.pagamentosDoAno} Pagamentos</Text>
+                    <Text style={styles.valor}>Vendas: R$ {this.state.comprasDoAnoValor}</Text> 
                     <Text style={styles.valor}>Pago: R$ {this.state.pagamentosDoAnoValor}</Text>
                 </View>
             </View>
